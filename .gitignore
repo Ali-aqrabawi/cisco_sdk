@@ -12,3 +12,5 @@ venv/
 ENV/
 
 .idea/
+
+main.py
