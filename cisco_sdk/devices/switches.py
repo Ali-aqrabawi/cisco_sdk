@@ -1,3 +1,8 @@
+"""
+this module contain the devices managers, for different switch models (Cat,nexus ... etc)
+device manager is the user interface to device , where you can sync config components, push config , backup restore..etc
+"""
+
 from .baseClass import CiscoDevice
 from cisco_sdk.config_components import layer2, layer3, security, system
 
@@ -18,14 +23,31 @@ class CiscoSDKNotSyncedError(Exception):
 
 
 class CatSwitch(CiscoDevice):
+    """
+    Catalyst Switch device manager ,
+    this manager handle Cat switch config sync , config push ,
+
+    my_swicth = CatSwitch(host='4.71.144.98', username='admin', password='J3llyfish1')
+    my_swicth.sync_cpu_status()
+    this example sync CPU status , and set a cpu_status attibute for myswitch object
+    """
     device_type = "cisco_ios"
 
     def __getattr__(self, item):
+        """
+        this is only for raising CiscoSDKNotSyncedError, as the sync method need to be called before accessing the
+        config attribute (e.g. myswitch.vlans )
+
+        for every config compnent(vlans,vrfs,interfaces ... etc) we have a sync method listed below ,
+        :param item: attribute
+        :return:
+        """
         if not item.endswith('s'):
             item = item + 's'
         raise CiscoSDKNotSyncedError(f"{item} is not synced , please make sure to call sync_{item} before,")
 
-    # system sync methods
+    # TODO : make the add sync to base class to have a reusable sync code
+    # TODO : sync methods shouldn't call get_command(cmd), it should take lists_dicts as arg , and set the attr
     def sync_cpu_status(self):
         print(f"Collecting cpu status from {self.connection_dict['ip']} ...")
         cpu_dict = self.get_command(CPU_CMD)
@@ -114,6 +136,10 @@ class CatSwitch(CiscoDevice):
         self.access_lists = security.AccessLists(acls_dicts)
 
     def sync(self):
+        """
+        this call all the sync_methods incase you want to sync all components ,
+        :return:
+        """
         self.sync_cpu_status()
         self.sync_interfaces()
         self.sync_vlans()

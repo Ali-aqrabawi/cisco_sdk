@@ -1,12 +1,23 @@
+"""
+this module has the security config components ,
+it has more business logic on the components
+"""
+
 from .base import BaseConfig, BaseConfigs
 from collections import defaultdict
 
 
 class Rule(BaseConfig):
+    """
+    single rule of an access-list
+    """
     pass
 
 
 class ACL:
+    """
+    an access-list which at least has one rule object
+    """
     rules = []
     name = ''
 
@@ -20,6 +31,9 @@ class ACL:
 
 
 class AccessLists(BaseConfigs):
+    """
+    all device access-lists
+    """
     model = ACL
 
     def __init__(self, component_dicts):

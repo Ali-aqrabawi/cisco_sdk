@@ -1,7 +1,13 @@
 from netmiko import ConnectHandler, NetmikoTimeoutError, NetMikoTimeoutException, \
-    NetmikoAuthError,NetMikoAuthenticationException
+    NetmikoAuthError, NetMikoAuthenticationException
+
 
 def netmiko_connect(connection_dict):
+    """
+    to handel netmiko connection
+    :param connection_dict: netmiko connection dict
+    :return: netmiko connection object
+    """
     try:
         connection = ConnectHandler(**connection_dict)
 
@@ -19,7 +25,7 @@ class SSHManager():
     SSH Context Manager
     """
 
-    def __init__(self,connection_dict):
+    def __init__(self, connection_dict):
 
         self.conn_dict = connection_dict
 
@@ -29,15 +35,14 @@ class SSHManager():
             return False
         return self
 
-    def __exit__(self,*args):
+    def __exit__(self, *args):
         self.conn.disconnect()
-
 
     def connect(self):
         print(f"connecting to {self.conn_dict['ip']}")
         return netmiko_connect(connection_dict=self.conn_dict)
 
-    def send_command(self,cmd):
+    def send_command(self, cmd):
 
         try:
             output = self.conn.send_config_set(cmd, strip_command=True)
@@ -47,6 +52,6 @@ class SSHManager():
             return False
         return output
 
-    def get_command(self,cmd):
-        output = self.conn.send_command(cmd,use_textfsm=True)
+    def get_command(self, cmd):
+        output = self.conn.send_command(cmd, use_textfsm=True)
         return output
