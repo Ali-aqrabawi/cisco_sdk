@@ -1,3 +1,8 @@
+"""
+this module has the system config components like cpu
+it has more business logic on the components
+"""
+
 from .base import BaseConfig
 
 

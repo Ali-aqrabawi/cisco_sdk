@@ -1,7 +1,17 @@
+"""
+this module has the layer 3 config components ,
+it has more business logic on the components like :
+Route.is_eigrp --> return true of that particular route is eigrp route
+BgpNeighbors.supressed_list --> return list of supressed bgp objects.
+"""
+
 from .base import BaseConfig, BaseConfigs
 
 
 class Route(BaseConfig):
+    """
+    single route model
+    """
 
     @property
     def is_connected(self):
@@ -29,6 +39,9 @@ class Route(BaseConfig):
 
 
 class Routes(BaseConfigs):
+    """
+    group of route models
+    """
     model = Route
 
     @property
@@ -62,6 +75,10 @@ class Routes(BaseConfigs):
 
 
 class Bgp(BaseConfig):
+    """
+    Bgp model
+    """
+
     @property
     def is_igp_origin(self):
         if self.origin == 'i':
@@ -106,6 +123,9 @@ class Bgp(BaseConfig):
 
 
 class BgpNeighbors(BaseConfigs):
+    """
+    set of bgp models
+    """
     model = Bgp
 
     @property
@@ -141,15 +161,30 @@ class BgpNeighbors(BaseConfigs):
             if i.network == network:
                 return i
 
+
 class Ospf(BaseConfig):
+    """
+    ospf neighbor model
+    """
     pass
+
 
 class OspfNeighbors(BaseConfigs):
+    """
+    set of ospf neighbors models
+    """
     model = Ospf
 
+
 class Vrf(BaseConfig):
+    """
+    Vrf model
+    """
     pass
 
-class Vrfs(BaseConfigs):
-    model = Vrf
 
+class Vrfs(BaseConfigs):
+    """
+    set of vrf models.
+    """
+    model = Vrf
