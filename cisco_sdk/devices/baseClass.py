@@ -1,5 +1,5 @@
-from cisco.snmp_helper.standard_oids import interface_oids
-from cisco.tools.ssh import SSHManager
+from cisco_sdk.snmp_helper.standard_oids import interface_oids
+from cisco_sdk.tools.ssh import SSHManager
 
 class CiscoDevice:
 
