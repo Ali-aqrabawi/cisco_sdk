@@ -10,7 +10,7 @@ SDK for cisco devices build using Netmiko and ntc-templates,
 ### Getting Started
     from cisco_sdk.devices.switches import CatSwitch
     my_swicth = CatSwitch(host='192.168.1.1', username='admin', password='admin')
-    my_swicth.sync_vlans()
+    my_swicth.sync_interfaces()
 
     for interface in my_switch.interfaces :
         print(interface.name , " is " , interface.link_status)
