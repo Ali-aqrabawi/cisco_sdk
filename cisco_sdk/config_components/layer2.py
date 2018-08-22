@@ -1,7 +1,17 @@
-from .base import BaseConfigs,BaseConfig
+"""
+this module has the layer 2 config components ,
+it has more business logic on the components like :
+vlan.has_interface --> return true of that particular vlan has an interface
+interface.is_svi --> return true of that particular interface is an svi interface
+"""
+
+from .base import BaseConfigs, BaseConfig
 
 
 class Vlan(BaseConfig):
+    """
+    single vlan model
+    """
 
     def __eq__(self, other):
         return isinstance(other, Vlan) and self.id == other.id
@@ -13,10 +23,17 @@ class Vlan(BaseConfig):
 
 
 class Vlans(BaseConfigs):
+    """
+    multiple vlans class ,
+    model attribute is to specify which model this class belong to
+    """
     model = Vlan
 
 
 class Interface(BaseConfig):
+    """
+    single interface model
+    """
 
     @property
     def is_svi(self):
@@ -38,6 +55,9 @@ class Interface(BaseConfig):
 
 
 class Interfaces(BaseConfigs):
+    """
+    multiple interface models class
+    """
     model = Interface
 
     @property
@@ -63,7 +83,6 @@ class CdpNeighbors(BaseConfigs):
 
     def get_cdp_by_ip(self, ip):
         return [i for i in self.all if i.neighbor_ip == ip]
-
 
 
 class Vtp(BaseConfig):
