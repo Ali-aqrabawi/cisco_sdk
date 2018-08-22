@@ -44,7 +44,7 @@ class CatSwitch(CiscoDevice):
         """
         if not item.endswith('s'):
             item = item + 's'
-        raise CiscoSDKNotSyncedError(f"{item} is not synced , please make sure to call sync_{item} before,")
+        raise CiscoSDKNotSyncedError(f"{item} is not synced  please make sure to call sync_{item} before,")
 
     # TODO : make the add sync to base class to have a reusable sync code
     # TODO : sync methods shouldn't call get_command(cmd), it should take lists_dicts as arg , and set the attr

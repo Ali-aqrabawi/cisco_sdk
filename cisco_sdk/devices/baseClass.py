@@ -21,7 +21,9 @@ class CiscoDevice(object):
         :return: list of dict or false if connection failed .
         """
         with SSHManager(self.connection_dict) as conn:
-            return conn.get_command(command) or False
+            if not conn:
+                return False
+            return conn.get_command(command)
 
     def reboot(self):
         """

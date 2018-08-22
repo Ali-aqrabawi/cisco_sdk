@@ -3,7 +3,9 @@
 SDK for cisco devices build using Netmiko and ntc-templates,
 
 ### Installing
-`pip install cisco_sdk`
+ 1) download [templats](https://github.com/Ali-aqrabawi/cisco_sdk) folder and place it
+ at `~/ntc-tempalates/templates`
+  2) `pip install cisco_sdk`
 
 ### Getting Started
     from cisco_sdk.devices.switches import CatSwitch

@@ -1,6 +1,11 @@
 from netmiko import ConnectHandler, NetmikoTimeoutError, NetMikoTimeoutException, \
     NetmikoAuthError, NetMikoAuthenticationException
 
+class CiscoSDKSSHAuthenticationError(Exception):
+    pass
+
+class CiscoSDKSSHTimeoutError(Exception):
+    pass
 
 def netmiko_connect(connection_dict):
     """
@@ -13,10 +18,10 @@ def netmiko_connect(connection_dict):
 
     except (NetMikoTimeoutException, NetmikoTimeoutError) as e:
         print(f"Time out while connecting to device {connection_dict['ip']}")
-        return False
+        raise CiscoSDKSSHTimeoutError(f"ERROR : Time out while connecting to device {connection_dict['ip']}")
     except (NetmikoAuthError, NetMikoAuthenticationException) as e:
-        print(f"ssh authentication failed to device {connection_dict['ip']}")
-        return False
+        print(f"ERROR : ssh authentication failed to device {connection_dict['ip']}")
+        raise CiscoSDKSSHAuthenticationError(f"SSH authentication failed to device {connection_dict['ip']}")
     return connection
 
 
@@ -36,6 +41,8 @@ class SSHManager():
         return self
 
     def __exit__(self, *args):
+        if not self.conn:
+            return
         self.conn.disconnect()
 
     def connect(self):
@@ -53,5 +60,9 @@ class SSHManager():
         return output
 
     def get_command(self, cmd):
-        output = self.conn.send_command(cmd, use_textfsm=True)
+        try :
+            output = self.conn.send_command(cmd, use_textfsm=True)
+        except ValueError:
+            raise ValueError("invalid ~/ntc-templates/templates , please make sure to download download ntc-templates/templates from "
+                             "https://github.com/Ali-aqrabawi/cisco_sdk/templates and add templates dir to ~/ntc-templates/templates ")
         return output
