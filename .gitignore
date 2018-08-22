@@ -1,0 +1,14 @@
+    command: "python manage.py collectstatic --noinput"
+n ###
+
+# Byte-compiled / optimized / DLL files
+
+__pycache__/
+*.py[cod]
+*$py.class
+
+# virtualenv
+.venv/
+venv/
+ENV/
+
