@@ -1,0 +1,2 @@
+easysnmp
+netmiko=2.1.1
