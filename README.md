@@ -8,6 +8,8 @@ SDK for cisco devices build using Netmiko and ntc-templates,
   2) `pip install cisco_sdk`
 
 ### Getting Started
+
+#### Example 1:
     from cisco_sdk.devices.switches import CatSwitch
     my_swicth = CatSwitch(host='192.168.1.1', username='admin', password='admin')
     my_swicth.sync_interfaces()
@@ -24,6 +26,21 @@ results :
     TenGigabitEthernet1/1/5  is  up
     TenGigabitEthernet1/2/1  is  down
     TenGigabitEthernet1/2/2  is  up
+
+#### Example 2:
+    from cisco_sdk.devices.switches import NexusSwitch
+    my_swicth = NexusSwitch(host='192.168.1.2', username='admin', password='admin')
+    my_swicth.sync_vpc()
+
+    print("list of up VPCs :")
+    for vpc in my_swicth.vpcs:
+        if vpc.is_up:
+            print("id:",vpc.id,"- port: ",vpc.port)
+
+results:
+
+    list of up VPCs :
+    id: 1 - port:  Po99
 
 ### Contributing
 

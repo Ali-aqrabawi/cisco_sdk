@@ -48,6 +48,12 @@ class Interface(BaseConfig):
         return False
 
     @property
+    def is_loopback(self):
+        if self.hardware_type == 'Loopback':
+            return True
+        return False
+
+    @property
     def is_up(self):
         if self.link_status == 'up' and self.protocol_status == 'up':
             return True
@@ -72,6 +78,10 @@ class Interfaces(BaseConfigs):
     def port_channel_list(self):
         return [i for i in self.all if i.is_port_channel]
 
+    @property
+    def loopback_list(self):
+        return [i for i in self.all if i.is_loopback]
+
 
 class CdpNeighbors(BaseConfigs):
 
@@ -87,3 +97,19 @@ class CdpNeighbors(BaseConfigs):
 
 class Vtp(BaseConfig):
     pass
+
+
+class Vpc(BaseConfig):
+
+    @property
+    def is_up(self):
+        if self.status == 'up':
+            return True
+        return False
+
+
+class Vpcs(BaseConfigs):
+    model = Vpc
+
+    def get_vpc_by_port(self, port):
+        return [i for i in self.all if i.port == port]

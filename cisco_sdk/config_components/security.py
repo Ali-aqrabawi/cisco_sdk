@@ -39,7 +39,7 @@ class AccessLists(BaseConfigs):
     def __init__(self, component_dicts):
         acl = defaultdict(list)
         for i in component_dicts:
-            acl_name = i.pop('acl_name')
+            acl_name = i.pop('name')
             acl[acl_name].append(i)
         for key, value in acl.items():
             self.all.append(ACL(name=key, rules=value))
