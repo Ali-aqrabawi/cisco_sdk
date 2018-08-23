@@ -5,9 +5,10 @@ device manager is the user interface to device , where you can sync config compo
 
 from .baseClass import CiscoDevice
 from cisco_sdk.config_components import layer2, layer3, security, system
+from abc import ABC
 
 VLAN_CMD = "show vlan"
-INTERFACE_CMD = "show interfaces"
+INTERFACE_CMD = "show interface"
 ROUTE_CMD = "show ip route"
 CDP_CMD = "show cdp neighbors detail"
 BGP_CMD = "show ip bgp"
@@ -16,22 +17,23 @@ ACL_CMD = "show ip access-list"
 VRF_CMD = "show vrf"
 VTP_CMD = "show vtp status"
 CPU_CMD = "show processes cpu"
+VPC_CMD = "show vpc"
+MODULE_CMD = "show module"
 
 
 class CiscoSDKNotSyncedError(Exception):
     pass
 
 
-class CatSwitch(CiscoDevice):
+class CiscoSwitch(CiscoDevice, ABC):
     """
-    Catalyst Switch device manager ,
+    Base Cisco Switch manager ,
     this manager handle Cat switch config sync , config push ,
 
     my_swicth = CatSwitch(host='4.71.144.98', username='admin', password='J3llyfish1')
     my_swicth.sync_cpu_status()
     this example sync CPU status , and set a cpu_status attibute for myswitch object
     """
-    device_type = "cisco_ios"
 
     def __getattr__(self, item):
         """
@@ -48,14 +50,6 @@ class CatSwitch(CiscoDevice):
 
     # TODO : make the add sync to base class to have a reusable sync code
     # TODO : sync methods shouldn't call get_command(cmd), it should take lists_dicts as arg , and set the attr
-    def sync_cpu_status(self):
-        print(f"Collecting cpu status from {self.connection_dict['ip']} ...")
-        cpu_dict = self.get_command(CPU_CMD)
-        if not cpu_dict:
-            print("No cpu status collected")
-            return None
-        self.cpu_status = system.Cpu(cpu_dict[0])
-
     # layer 2 sync methods
     def sync_interfaces(self):
         print(f"Collecting Interfaces from {self.connection_dict['ip']} ...")
@@ -73,14 +67,6 @@ class CatSwitch(CiscoDevice):
             return None
         self.vlans = layer2.Vlans(vlans_dicts)
 
-    def sync_vtp_status(self):
-        print(f"Collecting vtp status from {self.connection_dict['ip']} ...")
-        vtp_dicts = self.get_command(VTP_CMD)
-        if not vtp_dicts:
-            print("No vlans collected")
-            return None
-        self.vtp_status = layer2.Vtp(vtp_dicts[0])
-
     def sync_cdp_neighbors(self):
         print(f"Collecting CDP neighbors from {self.connection_dict['ip']} ...")
         cdps_dicts = self.get_command(CDP_CMD)
@@ -97,6 +83,51 @@ class CatSwitch(CiscoDevice):
             print("No Routes collected")
             return None
         self.routes = layer3.Routes(routes_dicts)
+
+    # security sync methods
+    def sync_access_lists(self):
+        print(f"Collecting access-lists from {self.connection_dict['ip']} ...")
+        acls_dicts = self.get_command(ACL_CMD)
+        if not acls_dicts:
+            print("No acls collected")
+            self.access_lists = None
+            return None
+        self.access_lists = security.AccessLists(acls_dicts)
+
+    def sync_vtp_status(self):
+        print(f"Collecting vtp status from {self.connection_dict['ip']} ...")
+        vtp_dicts = self.get_command(VTP_CMD)
+        if not vtp_dicts:
+            print("No vlans collected")
+            return None
+        self.vtp_status = layer2.Vtp(vtp_dicts[0])
+
+    def sync(self):
+        """
+        this call all the sync_methods incase you want to sync all components ,
+        :return:
+        """
+        self.sync_interfaces()
+        self.sync_vlans()
+        self.sync_cdp_neighbors()
+        self.sync_routes()
+        self.sync_access_lists()
+        self.sync_vtp_status()
+
+
+class CatSwitch(CiscoSwitch):
+    """
+    Catalyst Switch device manager which hold it's own sync methods in addition to base CiscoDevice sync methods
+    """
+    device_type = 'cisco_ios'
+
+    def sync_cpu_status(self):
+        print(f"Collecting cpu status from {self.connection_dict['ip']} ...")
+        cpu_dict = self.get_command(CPU_CMD)
+        if not cpu_dict:
+            print("No cpu status collected")
+            return None
+        self.cpu_status = system.Cpu(cpu_dict[0])
 
     def sync_bgp_neighbors(self):
         print(f"Collecting BGP neighbors from {self.connection_dict['ip']} ...")
@@ -125,30 +156,39 @@ class CatSwitch(CiscoDevice):
             return None
         self.vrfs = layer3.Vrfs(vrfs_dicts)
 
-    # security sync methods
-    def sync_access_lists(self):
-        print(f"Collecting access-lists from {self.connection_dict['ip']} ...")
-        acls_dicts = self.get_command(ACL_CMD)
-        if not acls_dicts:
-            print("No acls collected")
-            self.access_lists = None
-            return None
-        self.access_lists = security.AccessLists(acls_dicts)
-
     def sync(self):
-        """
-        this call all the sync_methods incase you want to sync all components ,
-        :return:
-        """
+        super().sync()
         self.sync_cpu_status()
-        self.sync_interfaces()
-        self.sync_vlans()
-        self.sync_vtp_status()
-        self.sync_cdp_neighbors()
-
-        self.sync_routes()
-        self.sync_bgp_neighbors()
         self.sync_ospf_neighbors()
+        self.sync_bgp_neighbors()
         self.sync_vrfs()
 
-        self.sync_access_lists()
+
+class NexusSwitch(CiscoSwitch):
+    """
+    Nexus 9K and 7k Switch device manager which hold it's own sync methods in addition to base CiscoDevice sync methods
+    """
+    device_type = 'cisco_nxos'
+
+    def sync_modules(self):
+        print(f"Collecting Modules from {self.connection_dict['ip']} ...")
+        modules_dicts = self.get_command(VRF_CMD)
+        if not modules_dicts:
+            print("No Modules collected")
+            self.modules = None
+            return None
+        self.modules = system.Modules(modules_dicts)
+
+    def sync_vpc(self):
+        print(f"Collecting vpcs from {self.connection_dict['ip']} ...")
+        vpc_dicts = self.get_command(VPC_CMD)
+        if not vpc_dicts:
+            print("No vpcs collected")
+            self.modules = None
+            return None
+        self.vpcs = layer2.Vpcs(vpc_dicts)
+
+    def sync(self):
+        super().sync()
+        self.sync_modules()
+        self.sync_vpc()
