@@ -2,7 +2,7 @@
 this module has the layer 3 config components ,
 it has more business logic on the components like :
 Route.is_eigrp --> return true of that particular route is eigrp route
-BgpNeighbors.supressed_list --> return list of supressed bgp objects.
+BgpNeighbors.suppressed_list --> return list of suppressed bgp objects.
 """
 
 from .base import BaseConfig, BaseConfigs
@@ -116,7 +116,7 @@ class Bgp(BaseConfig):
         return False
 
     @property
-    def is_supressed(self):
+    def is_suppressed(self):
         if self.status == 's':
             return True
         return False
@@ -129,8 +129,8 @@ class BgpNeighbors(BaseConfigs):
     model = Bgp
 
     @property
-    def supressed_list(self):
-        return [i for i in self.all if i.is_supressed]
+    def suppressed_list(self):
+        return [i for i in self.all if i.is_suppressed]
 
     @property
     def internal_list(self):
