@@ -1,4 +1,6 @@
 from cisco_sdk.tools.ssh import SSHManager
+from cisco_sdk.tools.config import check_config_execution
+from cisco_sdk.config_components.base_component import BaseConfigs
 
 
 class CiscoDevice(object):
@@ -14,7 +16,7 @@ class CiscoDevice(object):
             "password": password
         }
 
-    def get_command(self, command):
+    def get_command_output(self, command):
         """
         get output of command from device ,
         :param command:
@@ -24,6 +26,44 @@ class CiscoDevice(object):
             if not conn:
                 return False
             return conn.get_command(command)
+
+    def send_commands_config(self, cmds):
+        """
+        send config commands to device
+        :param cmds: list: commands strings
+        :return: str: execution output
+        """
+        with SSHManager(self.connection_dict) as conn:
+            if not conn:
+                return False
+            output = conn.send_commands_list(cmds)
+            return output
+
+    def _get_components_cmds(self):
+        """try:
+        return all cmds added to all self.BaseConfigs , and return them
+        :return: list of all added commands on that device
+        """
+        results = []
+        for name, obj in vars(self).items():
+            if isinstance(obj, BaseConfigs):
+                results += obj.cmds
+        return results
+
+    def commit(self):
+        """
+        commit config changes to device,
+        :return: (is_ok,err_msg): is_ok is bool() , err_msg is str()
+        """
+        # get all config changes and set them
+        all_cmds = self._get_components_cmds()
+        if not all_cmds:
+            return False, "No changes to commit"
+        # execute the commands
+        output = self.send_commands_config(all_cmds)
+        if not output:
+            return False,"Connection to device failed"
+        return check_config_execution(output)
 
     def reboot(self):
         """
@@ -38,7 +78,7 @@ class CiscoDevice(object):
         :param ip:
         :return: bool
         """
-        out = self.get_command(f"ping {ip}")
+        out = self.get_command_output(f"ping {ip}")
         if 'Success rate is 0' in out:
             return False
         return True
