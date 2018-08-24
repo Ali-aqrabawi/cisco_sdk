@@ -10,6 +10,9 @@ SDK for cisco devices build using Netmiko and ntc-templates,
 ### Getting Started
 
 #### Example 1:
+
+to sync interfaces from the device:
+
     from cisco_sdk.devices.switches import CatSwitch
     my_swicth = CatSwitch(host='192.168.1.1', username='admin', password='admin')
     my_swicth.sync_interfaces()
@@ -28,6 +31,24 @@ results :
     TenGigabitEthernet1/2/2  is  up
 
 #### Example 2:
+to add a Vlan to the device:
+
+    from cisco_sdk.devices.switches import CatSwitch
+    my_swicth = CatSwitch(host='192.168.1.1', username='admin', password='admin')
+    my_swicth.sync_vlans()
+    my_swicth.vlans.add(id='911', name="Vlan911")
+    is_ok, msgs = my_swicth.commit()
+    print(is_ok)
+
+
+results:
+
+    True
+
+
+#### Example 3:
+Nexus switch
+
     from cisco_sdk.devices.switches import NexusSwitch
     my_swicth = NexusSwitch(host='192.168.1.2', username='admin', password='admin')
     my_swicth.sync_vpc()
