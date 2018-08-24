@@ -1,0 +1,2 @@
+class CiscoSDKNotSyncedError(Exception):
+    pass

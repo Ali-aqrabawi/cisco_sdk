@@ -3,7 +3,7 @@ this module has the system config components like cpu
 it has more business logic on the components
 """
 
-from .base import BaseConfig, BaseConfigs
+from .base_component import BaseConfig, BaseConfigs
 
 
 class Cpu(BaseConfig):

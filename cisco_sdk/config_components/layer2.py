@@ -5,7 +5,7 @@ vlan.has_interface --> return true of that particular vlan has an interface
 interface.is_svi --> return true of that particular interface is an svi interface
 """
 
-from .base import BaseConfigs, BaseConfig
+from .base_component import BaseConfigs, BaseConfig
 
 
 class Vlan(BaseConfig):
@@ -24,10 +24,12 @@ class Vlan(BaseConfig):
 
 class Vlans(BaseConfigs):
     """
-    multiple vlans class ,
+    device vlans manager class ,
     model attribute is to specify which model this class belong to
     """
     model = Vlan
+
+    conf_template = "vlan.j2"
 
 
 class Interface(BaseConfig):

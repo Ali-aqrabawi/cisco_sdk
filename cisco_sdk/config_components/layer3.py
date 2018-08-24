@@ -5,7 +5,7 @@ Route.is_eigrp --> return true of that particular route is eigrp route
 BgpNeighbors.suppressed_list --> return list of suppressed bgp objects.
 """
 
-from .base import BaseConfig, BaseConfigs
+from .base_component import BaseConfig, BaseConfigs
 
 
 class Route(BaseConfig):

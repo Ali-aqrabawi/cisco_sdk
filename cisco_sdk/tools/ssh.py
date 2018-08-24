@@ -1,11 +1,14 @@
 from netmiko import ConnectHandler, NetmikoTimeoutError, NetMikoTimeoutException, \
     NetmikoAuthError, NetMikoAuthenticationException
 
+
 class CiscoSDKSSHAuthenticationError(Exception):
     pass
 
+
 class CiscoSDKSSHTimeoutError(Exception):
     pass
+
 
 def netmiko_connect(connection_dict):
     """
@@ -49,20 +52,17 @@ class SSHManager():
         print(f"connecting to {self.conn_dict['ip']}")
         return netmiko_connect(connection_dict=self.conn_dict)
 
-    def send_command(self, cmd):
+    def send_commands_list(self, cmd):
 
-        try:
-            output = self.conn.send_config_set(cmd, strip_command=True)
+        output = self.conn.send_config_set(cmd, strip_command=True)
 
-        except Exception as e:
-
-            return False
         return output
 
     def get_command(self, cmd):
-        try :
+        try:
             output = self.conn.send_command(cmd, use_textfsm=True)
         except ValueError:
-            raise ValueError("invalid ~/ntc-templates/templates , please make sure to download download ntc-templates/templates from "
-                             "https://github.com/Ali-aqrabawi/cisco_sdk/templates and add templates dir to ~/ntc-templates/templates ")
+            raise ValueError(
+                "invalid ~/ntc-templates/templates , please make sure to download download ntc-templates/templates from "
+                "https://github.com/Ali-aqrabawi/cisco_sdk/templates and add templates dir to ~/ntc-templates/templates ")
         return output
