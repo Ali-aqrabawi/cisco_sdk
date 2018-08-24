@@ -1,11 +1,20 @@
 """
 Config component are the features in cisco devices like (routes,acl,vlans ... etc)
 """
+from cisco_sdk.tools.config import render_command
+
+
+def validate_cmd_inputs(kwargs):
+    # validate add(),delete() and update() inputs are strings
+    for kwarg in kwargs:
+        assert isinstance(kwarg, str), f"config inputs should be string not {type(kwarg)}"
+
 
 class BaseConfig(object):
     """
     base object of single component like a Vlan , a route
     """
+
     def __init__(self, output):
         """
         set self the attributes we get from the device output dict,
@@ -45,6 +54,8 @@ class BaseConfigs(object):
     my_switch.vlans.count  --> give the count of all vlans
     my_switch.vlans.all --> return list of all vlan objects
 
+    my_switch.vlans.add(id="1",name="aa")
+
     you can loop through vlans
 
     for vlan in my_Switch.vlans:
@@ -52,7 +63,9 @@ class BaseConfigs(object):
 
     """
     model = BaseConfig
+    conf_template = ""
     all = []
+    cmds = []
 
     @property
     def count(self):
@@ -61,6 +74,24 @@ class BaseConfigs(object):
     def __init__(self, component_dicts):
         for i in component_dicts:
             self.all.append(self.model(i))
+
+    def add(self, **kwargs):
+        validate_cmd_inputs(kwargs)
+        kwargs.update({"action": "add"})
+        cmds = render_command(self.conf_template, kwargs)
+        self.cmds += cmds
+
+    def delete(self, **kwargs):
+        validate_cmd_inputs(kwargs)
+        kwargs.update({"action": "delete"})
+        cmds = render_command(self.conf_template, kwargs)
+        self.cmds += cmds
+
+    def update(self, **kwargs):
+        validate_cmd_inputs(kwargs)
+        kwargs.update({"action": "update"})
+        cmds = render_command(self.conf_template, kwargs)
+        self.cmds += cmds
 
     def __len__(self):
         return len(self.all)
