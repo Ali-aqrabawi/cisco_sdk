@@ -52,6 +52,9 @@ class SSHManager():
         print(f"connecting to {self.conn_dict['ip']}")
         return netmiko_connect(connection_dict=self.conn_dict)
 
+    def save_config(self):
+        self.conn.save_config()
+
     def send_commands_list(self, cmd):
 
         output = self.conn.send_config_set(cmd, strip_command=True)
