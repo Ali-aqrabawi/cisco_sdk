@@ -27,7 +27,7 @@ class CiscoDevice(object):
                 return False
             return conn.get_command(command)
 
-    def send_commands_config(self, cmds):
+    def send_commands_config(self, cmds, save):
         """
         send config commands to device
         :param cmds: list: commands strings
@@ -37,6 +37,8 @@ class CiscoDevice(object):
             if not conn:
                 return False
             output = conn.send_commands_list(cmds)
+            if save:
+                conn.save_config()
             return output
 
     def _get_components_cmds(self):
@@ -50,7 +52,7 @@ class CiscoDevice(object):
                 results += obj.cmds
         return results
 
-    def commit(self):
+    def commit(self, save=False):
         """
         commit config changes to device,
         :return: (is_ok,err_msg): is_ok is bool() , err_msg is str()
@@ -60,10 +62,16 @@ class CiscoDevice(object):
         if not all_cmds:
             return False, "No changes to commit"
         # execute the commands
-        output = self.send_commands_config(all_cmds)
+        output = self.send_commands_config(all_cmds, save)
         if not output:
-            return False,"Connection to device failed"
+            return False, "Connection to device failed"
         return check_config_execution(output)
+
+    def save(self):
+        with SSHManager(self.connection_dict) as conn:
+            if not conn:
+                return False
+            conn.save_config()
 
     def reboot(self):
         """

@@ -76,12 +76,22 @@ class BaseConfigs(object):
             self.all.append(self.model(i))
 
     def add(self, **kwargs):
+        """
+        add config to device , exampe my_switch.vlans.add(id="1",name="vlan1")
+        :param kwargs: config parameters
+        :return:
+        """
         validate_cmd_inputs(kwargs)
         kwargs.update({"action": "add"})
         cmds = render_command(self.conf_template, kwargs)
         self.cmds += cmds
 
     def delete(self, **kwargs):
+        """
+        delete component , example my_switch.vlans.delete(id="1")
+        :param kwargs:
+        :return:
+        """
         validate_cmd_inputs(kwargs)
         kwargs.update({"action": "delete"})
         cmds = render_command(self.conf_template, kwargs)
