@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/Ali-aqrabawi/cisco_sdk",
     packages=setuptools.find_packages(),
 
-    install_requires=['easysnmp', 'netmiko'],
+    install_requires=['easysnmp', 'jinja2', 'netmiko'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
