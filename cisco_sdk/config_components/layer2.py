@@ -9,9 +9,7 @@ from .base_component import BaseConfigs, BaseConfig
 
 
 class Vlan(BaseConfig):
-    """
-    single vlan model
-    """
+    """single vlan model"""
 
     def __eq__(self, other):
         return isinstance(other, Vlan) and self.id == other.id
@@ -33,9 +31,7 @@ class Vlans(BaseConfigs):
 
 
 class Interface(BaseConfig):
-    """
-    single interface model
-    """
+    """single interface model"""
 
     @property
     def is_svi(self):
@@ -63,9 +59,7 @@ class Interface(BaseConfig):
 
 
 class Interfaces(BaseConfigs):
-    """
-    multiple interface models class
-    """
+    """multiple interface models class"""
     model = Interface
 
     @property
