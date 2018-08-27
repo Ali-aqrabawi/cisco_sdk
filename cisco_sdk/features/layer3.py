@@ -5,13 +5,11 @@ Route.is_eigrp --> return true of that particular route is eigrp route
 BgpNeighbors.suppressed_list --> return list of suppressed bgp objects.
 """
 
-from .base_component import BaseConfig, BaseConfigs
+from .base_component import Feature, FeatureSet
 
 
-class Route(BaseConfig):
-    """
-    single route model
-    """
+class Route(Feature):
+    """single route feature"""
 
     @property
     def is_connected(self):
@@ -38,10 +36,8 @@ class Route(BaseConfig):
         return self.protocol == 'R'
 
 
-class Routes(BaseConfigs):
-    """
-    group of route models
-    """
+class Routes(FeatureSet):
+    """FeatureSet : group of route Features"""
     model = Route
 
     @property
@@ -74,10 +70,8 @@ class Routes(BaseConfigs):
         return [i for i in self.all if network == i.network]
 
 
-class Bgp(BaseConfig):
-    """
-    Bgp model
-    """
+class Bgp(Feature):
+    """Bgp feature"""
 
     @property
     def is_igp_origin(self):
@@ -122,10 +116,8 @@ class Bgp(BaseConfig):
         return False
 
 
-class BgpNeighbors(BaseConfigs):
-    """
-    set of bgp models
-    """
+class BgpNeighbors(FeatureSet):
+    """FeatureSet: set of bgp Features"""
     model = Bgp
 
     @property
@@ -162,29 +154,21 @@ class BgpNeighbors(BaseConfigs):
                 return i
 
 
-class Ospf(BaseConfig):
-    """
-    ospf neighbor model
-    """
+class Ospf(Feature):
+    """ospf neighbor Feature"""
     pass
 
 
-class OspfNeighbors(BaseConfigs):
-    """
-    set of ospf neighbors models
-    """
+class OspfNeighbors(FeatureSet):
+    """FeatureSet: a set of ospf neighbors Feature"""
     model = Ospf
 
 
-class Vrf(BaseConfig):
-    """
-    Vrf model
-    """
+class Vrf(Feature):
+    """Vrf Feature"""
     pass
 
 
-class Vrfs(BaseConfigs):
-    """
-    set of vrf models.
-    """
+class Vrfs(FeatureSet):
+    """FeatureSet: of vrfs Feature"""
     model = Vrf

@@ -10,7 +10,7 @@ def validate_cmd_inputs(kwargs):
         assert isinstance(kwarg, str), f"config inputs should be string not {type(kwarg)}"
 
 
-class BaseConfig(object):
+class Feature(object):
     """
     base object of single component like a Vlan , a route
     """
@@ -40,15 +40,15 @@ class BaseConfig(object):
         return str(self.deserialize)
 
 
-class BaseConfigs(object):
+class FeatureSet(object):
     """
-    base object for a list of components like (vlans,interfaces)
+    base object for a list of components like (vlans|interfaces)
     we need this object to group all vlans under one attribute in device manager ,
     my_swicth = CatSwitch(host='4.71.144.98', username='admin', password='J3llyfish1')
     my_swicth.sync_vlans()
 
-    my_switch now will have vlans attributes which group all vlan objects ,
-    BaseConfigs will has it's own methods which applied on all it's childern ,
+    my_switch now will have vlans(which is FeatureSet object) attribute which group all vlan objects ,
+    FeatureSet will has it's own methods which applied on all it's children ,
     for example
 
     my_switch.vlans.count  --> give the count of all vlans
@@ -62,7 +62,7 @@ class BaseConfigs(object):
         print(vlan.id)
 
     """
-    model = BaseConfig
+    model = Feature
     conf_template = ""
     all = []
     cmds = []

@@ -4,7 +4,7 @@ device manager is the user interface to device , where you can sync config compo
 """
 
 from .base_device import CiscoDevice
-from cisco_sdk.config_components import layer2, layer3, security, system
+from cisco_sdk.features import layer2, layer3, security, system
 from abc import ABC
 from cisco_sdk.exceptions import CiscoSDKNotSyncedError
 

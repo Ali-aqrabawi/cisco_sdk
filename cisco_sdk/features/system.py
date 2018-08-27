@@ -3,10 +3,10 @@ this module has the system config components like cpu
 it has more business logic on the components
 """
 
-from .base_component import BaseConfig, BaseConfigs
+from .base_component import Feature, FeatureSet
 
 
-class Cpu(BaseConfig):
+class Cpu(Feature):
     @property
     def is_high(self):
         if int(self.cpu_5_sec) > 80:
@@ -19,7 +19,7 @@ class Cpu(BaseConfig):
         return False
 
 
-class Module(BaseConfig):
+class Module(Feature):
 
     @property
     def is_active(self):
@@ -40,9 +40,9 @@ class Module(BaseConfig):
         return False
 
 
-class Modules(BaseConfigs):
+class Modules(FeatureSet):
     """
-    cisco "show module" config component
+    cisco "show module" for nexus and 6k
     """
     model = Module
 
