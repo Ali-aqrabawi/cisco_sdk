@@ -5,13 +5,11 @@ vlan.has_interface --> return true of that particular vlan has an interface
 interface.is_svi --> return true of that particular interface is an svi interface
 """
 
-from .base_component import BaseConfigs, BaseConfig
+from .base_component import FeatureSet, Feature
 
 
-class Vlan(BaseConfig):
-    """
-    single vlan model
-    """
+class Vlan(Feature):
+    """single vlan model"""
 
     def __eq__(self, other):
         return isinstance(other, Vlan) and self.id == other.id
@@ -22,7 +20,7 @@ class Vlan(BaseConfig):
             return False
 
 
-class Vlans(BaseConfigs):
+class Vlans(FeatureSet):
     """
     device vlans manager class ,
     model attribute is to specify which model this class belong to
@@ -32,10 +30,8 @@ class Vlans(BaseConfigs):
     conf_template = "vlan.j2"
 
 
-class Interface(BaseConfig):
-    """
-    single interface model
-    """
+class Interface(Feature):
+    """single interface model"""
 
     @property
     def is_svi(self):
@@ -62,10 +58,8 @@ class Interface(BaseConfig):
         return False
 
 
-class Interfaces(BaseConfigs):
-    """
-    multiple interface models class
-    """
+class Interfaces(FeatureSet):
+    """multiple interface models class"""
     model = Interface
 
     @property
@@ -85,7 +79,7 @@ class Interfaces(BaseConfigs):
         return [i for i in self.all if i.is_loopback]
 
 
-class CdpNeighbors(BaseConfigs):
+class CdpNeighbors(FeatureSet):
 
     def get_cdps_for_port(self, port):
         return [i for i in self.all if i.local_port == port]
@@ -97,11 +91,11 @@ class CdpNeighbors(BaseConfigs):
         return [i for i in self.all if i.neighbor_ip == ip]
 
 
-class Vtp(BaseConfig):
+class Vtp(Feature):
     pass
 
 
-class Vpc(BaseConfig):
+class Vpc(Feature):
 
     @property
     def is_up(self):
@@ -110,7 +104,7 @@ class Vpc(BaseConfig):
         return False
 
 
-class Vpcs(BaseConfigs):
+class Vpcs(FeatureSet):
     model = Vpc
 
     def get_vpc_by_port(self, port):

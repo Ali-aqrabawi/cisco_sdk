@@ -1,6 +1,6 @@
 from cisco_sdk.tools.ssh import SSHManager
-from cisco_sdk.tools.config import check_config_execution
-from cisco_sdk.config_components.base_component import BaseConfigs
+from cisco_sdk.tools.config import check_config_result
+from cisco_sdk.features.base_component import FeatureSet
 
 
 class CiscoDevice(object):
@@ -41,14 +41,14 @@ class CiscoDevice(object):
                 conn.save_config()
             return output
 
-    def _get_components_cmds(self):
+    def _get_all_cmds(self):
         """try:
-        return all cmds added to all self.BaseConfigs , and return them
+        return all cmds added to all self.FeatureSet , and return them
         :return: list of all added commands on that device
         """
         results = []
         for name, obj in vars(self).items():
-            if isinstance(obj, BaseConfigs):
+            if isinstance(obj, FeatureSet):
                 results += obj.cmds
         return results
 
@@ -58,14 +58,14 @@ class CiscoDevice(object):
         :return: (is_ok,err_msg): is_ok is bool() , err_msg is str()
         """
         # get all config changes and set them
-        all_cmds = self._get_components_cmds()
+        all_cmds = self._get_all_cmds()
         if not all_cmds:
             return False, "No changes to commit"
         # execute the commands
         output = self.send_commands_config(all_cmds, save)
         if not output:
             return False, "Connection to device failed"
-        return check_config_execution(output)
+        return check_config_result(output)
 
     def save(self):
         with SSHManager(self.connection_dict) as conn:

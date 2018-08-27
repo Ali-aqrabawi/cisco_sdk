@@ -3,7 +3,7 @@ import os
 from jinja2 import Environment, FileSystemLoader
 
 
-def check_config_execution(output):
+def check_config_result(output):
     """
     take the output result of executed commands on the device and check if any commands has failed
     :param output: str: result of executed commands
