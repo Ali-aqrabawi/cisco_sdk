@@ -1,0 +1,14 @@
+{% if action == "add" or action == "update" %}
+interface {{ id }}
+{% if description %}description {{ description }}{% endif %}
+{% if ip_address and  netmask %}ip address {{ ip_address }} {{ netmask }}{% endif %}
+{% if admin_status %}
+    {% if admin_status == 'enable' %}
+    no shutdown
+    {% elif admin_status == 'disable' %}
+    shutdown
+    {% endif %}
+{% endif %}
+{% elif action == "delete" %}
+no interface {{ id }}
+{% endif %}

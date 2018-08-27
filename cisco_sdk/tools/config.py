@@ -2,6 +2,11 @@ import re
 import os
 from jinja2 import Environment, FileSystemLoader
 
+def clean(x):
+    def remove(x):
+        string = x.strip(" ")
+        return string
+    return list(filter(None,map(remove,x)))
 
 def check_config_result(output):
     """
@@ -48,8 +53,9 @@ def render_command(template_name, variables):
     :param variables: command variables
     :return: cmd: list of rendered commands
     """
-    PROJECT_DIR = os.path.dirname(os.path.abspath('.'))
-    TEMPLATES_DIR = os.path.join(PROJECT_DIR, "cisco_sdk/config_components/configuration_templates")
+    # get cisco_sdk/ path
+    PROJECT_DIR = os.path.dirname(os.path.dirname(__file__))
+    TEMPLATES_DIR = os.path.join(PROJECT_DIR, "features/configuration_templates")
     # render the jinja2 template from a string
     env = Environment(loader=FileSystemLoader(searchpath=TEMPLATES_DIR))
 
@@ -58,6 +64,5 @@ def render_command(template_name, variables):
     cmd = template.render(**variables)
     cmd = cmd.split('\n')
 
-    cmd = list(filter(None, cmd))
 
-    return cmd
+    return clean(cmd)

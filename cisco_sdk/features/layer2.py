@@ -61,6 +61,10 @@ class Interface(Feature):
 class Interfaces(FeatureSet):
     """multiple interface models class"""
     model = Interface
+    conf_template = 'interface.j2'
+
+    def bounce(self,id):
+        self.cmds += [f"interface {id}" , "shutdown" , "no shutdown"]
 
     @property
     def down_list(self):
