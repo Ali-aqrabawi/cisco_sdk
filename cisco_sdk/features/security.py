@@ -3,11 +3,11 @@ this module has the security config components ,
 it has more business logic on the components
 """
 
-from .base_component import BaseConfig, BaseConfigs
+from .base_component import Feature, FeatureSet
 from collections import defaultdict
 
 
-class Rule(BaseConfig):
+class Rule(Feature):
     """
     single rule of an access-list
     """
@@ -30,7 +30,7 @@ class ACL:
         pass
 
 
-class AccessLists(BaseConfigs):
+class AccessLists(FeatureSet):
     """
     all device access-lists
     """

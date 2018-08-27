@@ -1,2 +1,3 @@
 easysnmp
-netmiko=2.1.1
+jinja2
+netmiko==2.1.1
