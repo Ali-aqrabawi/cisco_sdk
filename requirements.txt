@@ -1,3 +1,2 @@
-easysnmp
 jinja2
 netmiko==2.1.1

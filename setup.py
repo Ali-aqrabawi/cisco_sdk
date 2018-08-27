@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="cisco_sdk",
-    version="0.0.8",
+    version="0.0.9",
     author="ali aqrabawi",
     author_email="ali_aqrabawi@yahoo.com",
     description="cisco devices SDK",
@@ -14,7 +14,7 @@ setuptools.setup(
     url="https://github.com/Ali-aqrabawi/cisco_sdk",
     packages=setuptools.find_packages(),
 
-    install_requires=['easysnmp', 'jinja2', 'netmiko'],
+    install_requires=['jinja2', 'netmiko'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
