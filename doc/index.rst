@@ -1,9 +1,9 @@
-$cisco_sdk
+cisco_sdk
 ========
 
 cisco_sdk is an sdk that uses netmiko to provide a high level API for network automation.
 
-$Example 1:
+Example 1:
 
 to sync interfaces from the device:
 .. code-block:: python
@@ -29,7 +29,7 @@ results :
             ``.interfaces`` attribute has properties like (``admin_status``,``id``,``ip_address`` ... etc) see `feature_list`_ for all
             available properties .
 ..`feature_list`_ https://cisco-sdk.readthedocs.io/en/latest/feature_list.rst
-Example 2:
+$Example 2:
 to add a Vlan to the device:
 .. code-block:: python
     from cisco_sdk.devices.switches import CatSwitch
@@ -45,7 +45,7 @@ results:
     True
 
 
-Example 3:
+$Example 3:
 Nexus switch
 .. code-block:: python
     from cisco_sdk.devices.switches import NexusSwitch
@@ -65,7 +65,7 @@ results:
 Features
 --------
 
-$cisco_sdk support following devices:
+cisco_sdk support following devices:
 
 * Catalyst switches
 * Nexus switches
