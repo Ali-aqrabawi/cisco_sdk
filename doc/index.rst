@@ -29,7 +29,7 @@ results :
             ``.interfaces`` attribute has properties like (``admin_status``,``id``,``ip_address`` ... etc) see `feature_list`_ for all
             available properties .
 ..`feature_list`_ https://cisco-sdk.readthedocs.io/en/latest/feature_list.rst
-$Example 2:
+Example 2:
 to add a Vlan to the device:
 .. code-block:: python
     from cisco_sdk.devices.switches import CatSwitch
@@ -45,7 +45,7 @@ results:
     True
 
 
-$Example 3:
+Example 3:
 Nexus switch
 .. code-block:: python
     from cisco_sdk.devices.switches import NexusSwitch
