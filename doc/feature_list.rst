@@ -1,8 +1,8 @@
-$Layer2 properties
+Layer2 properties
 --------
-$Layer3 properties
+Layer3 properties
 --------
-$Security properties
+Security properties
 --------
-$System properties
+System properties
 --------
