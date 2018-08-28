@@ -1,9 +1,9 @@
-cisco_sdk
+$cisco_sdk
 ========
 
 cisco_sdk is an sdk that uses netmiko to provide a high level API for network automation.
 
-Example 1:
+$Example 1:
 
 to sync interfaces from the device:
 .. code-block:: python
@@ -65,7 +65,7 @@ results:
 Features
 --------
 
-cisco_sdk support following devices:
+$cisco_sdk support following devices:
 
 * Catalyst switches
 * Nexus switches
