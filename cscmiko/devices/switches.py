@@ -22,7 +22,7 @@ VPC_CMD = "show vpc"
 MODULE_CMD = "show module"
 
 
-class CiscoSwitch(CiscoDevice, ABC):
+class _CiscoSwitch(CiscoDevice, ABC):
     """
     Base Cisco Switch manager ,
     this manager handle Cat switch config sync , config push ,
@@ -113,7 +113,7 @@ class CiscoSwitch(CiscoDevice, ABC):
         self.sync_vtp_status()
 
 
-class CatSwitch(CiscoSwitch):
+class CatSwitch(_CiscoSwitch):
     """
     Catalyst Switch device manager which hold it's own sync methods in addition to base CiscoDevice sync methods
     """
@@ -162,7 +162,7 @@ class CatSwitch(CiscoSwitch):
         self.sync_vrfs()
 
 
-class NexusSwitch(CiscoSwitch):
+class NexusSwitch(_CiscoSwitch):
     """
     Nexus 9K and 7k Switch device manager which hold it's own sync methods in addition to base CiscoDevice sync methods
     """
