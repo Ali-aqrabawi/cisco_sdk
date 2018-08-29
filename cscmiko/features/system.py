@@ -44,6 +44,7 @@ class Modules(FeatureSet):
     """
     cisco "show module" for nexus and 6k
     """
+    _feature_name = 'modules'
     model = Module
 
     def get_module_by_model(self, model):

@@ -6,20 +6,20 @@ device manager is the user interface to device , where you can sync config compo
 from .base_device import CiscoDevice
 from cscmiko.features import layer2, layer3, security, system
 from abc import ABC
-from cscmiko.exceptions import CiscoSDKNotSyncedError
+from cscmiko.exceptions import CscmikoNotSyncedError, CscmikoInvalidFeatureError
 
-VLAN_CMD = "show vlan"
-INTERFACE_CMD = "show interface"
-ROUTE_CMD = "show ip route"
-CDP_CMD = "show cdp neighbors detail"
-BGP_CMD = "show ip bgp"
-OSPF_CMD = "show ip ospf neighbor"
-ACL_CMD = "show ip access-list"
-VRF_CMD = "show vrf"
-VTP_CMD = "show vtp status"
-CPU_CMD = "show processes cpu"
-VPC_CMD = "show vpc"
-MODULE_CMD = "show module"
+_VLAN_CMD = "show vlan"
+_INTERFACE_CMD = "show interface"
+_ROUTE_CMD = "show ip route"
+_CDP_CMD = "show cdp neighbors detail"
+_BGP_CMD = "show ip bgp"
+_OSPF_CMD = "show ip ospf neighbor"
+_ACL_CMD = "show ip access-list"
+_VRF_CMD = "show vrf"
+_VTP_CMD = "show vtp status"
+_CPU_CMD = "show processes cpu"
+_VPC_CMD = "show vpc"
+_MODULE_CMD = "show module"
 
 
 class _CiscoSwitch(CiscoDevice, ABC):
@@ -31,6 +31,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
     my_swicth.sync_cpu_status()
     this example sync CPU status , and set a cpu_status attibute for myswitch object
     """
+    features_list = ['interfaces', 'vlans', 'cdp_neighbors', 'routes', 'access_lists', 'vtp_status']
 
     def __getattr__(self, item):
         """
@@ -41,9 +42,12 @@ class _CiscoSwitch(CiscoDevice, ABC):
         :param item: attribute
         :return:
         """
+        if item not in self.features_list:
+            raise CscmikoInvalidFeatureError(
+                f"{item} is not a valid feature , available features = {self.features_list}")
         if not item.endswith('s'):
             item = item + 's'
-        raise CiscoSDKNotSyncedError(f"{item} is not synced  please make sure to call sync_{item} before,")
+        raise CscmikoNotSyncedError(f"{item} is not synced  please make sure to call sync_{item} before,")
 
     # Sync Methods
     # TODO : make the add sync to base class to have a reusable sync code
@@ -51,7 +55,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
     # layer 2 sync methods
     def sync_interfaces(self):
         print(f"Collecting Interfaces from {self.connection_dict['ip']} ...")
-        interfaces_dicts = self.get_command_output(INTERFACE_CMD)
+        interfaces_dicts = self.get_command_output(_INTERFACE_CMD)
         if not interfaces_dicts:
             print("No interfaces collected")
             return None
@@ -59,7 +63,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
 
     def sync_vlans(self):
         print(f"Collecting Vlans from {self.connection_dict['ip']} ...")
-        vlans_dicts = self.get_command_output(VLAN_CMD)
+        vlans_dicts = self.get_command_output(_VLAN_CMD)
         if not vlans_dicts:
             print("No vlans collected")
             return None
@@ -67,7 +71,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
 
     def sync_cdp_neighbors(self):
         print(f"Collecting CDP neighbors from {self.connection_dict['ip']} ...")
-        cdps_dicts = self.get_command_output(CDP_CMD)
+        cdps_dicts = self.get_command_output(_CDP_CMD)
         if not cdps_dicts:
             print("No cdp neighbors collected")
             return None
@@ -76,7 +80,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
     # Layer 3 sync methods
     def sync_routes(self):
         print(f"Collecting Routes from {self.connection_dict['ip']} ...")
-        routes_dicts = self.get_command_output(ROUTE_CMD)
+        routes_dicts = self.get_command_output(_ROUTE_CMD)
         if not routes_dicts:
             print("No Routes collected")
             return None
@@ -85,7 +89,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
     # security sync methods
     def sync_access_lists(self):
         print(f"Collecting access-lists from {self.connection_dict['ip']} ...")
-        acls_dicts = self.get_command_output(ACL_CMD)
+        acls_dicts = self.get_command_output(_ACL_CMD)
         if not acls_dicts:
             print("No acls collected")
             self.access_lists = None
@@ -94,7 +98,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
 
     def sync_vtp_status(self):
         print(f"Collecting vtp status from {self.connection_dict['ip']} ...")
-        vtp_dicts = self.get_command_output(VTP_CMD)
+        vtp_dicts = self.get_command_output(_VTP_CMD)
         if not vtp_dicts:
             print("No vlans collected")
             return None
@@ -118,10 +122,11 @@ class CatSwitch(_CiscoSwitch):
     Catalyst Switch device manager which hold it's own sync methods in addition to base CiscoDevice sync methods
     """
     device_type = 'cisco_ios'
+    features_list = _CiscoSwitch.features_list + ['sync_cpu_status', 'bgp_neighbors', 'ospf_neighbors', 'vrfs']
 
     def sync_cpu_status(self):
         print(f"Collecting cpu status from {self.connection_dict['ip']} ...")
-        cpu_dict = self.get_command_output(CPU_CMD)
+        cpu_dict = self.get_command_output(_CPU_CMD)
         if not cpu_dict:
             print("No cpu status collected")
             return None
@@ -129,7 +134,7 @@ class CatSwitch(_CiscoSwitch):
 
     def sync_bgp_neighbors(self):
         print(f"Collecting BGP neighbors from {self.connection_dict['ip']} ...")
-        bgps_dicts = self.get_command_output(BGP_CMD)
+        bgps_dicts = self.get_command_output(_BGP_CMD)
         if not bgps_dicts:
             print("No BGP collected")
             self.bgp_neighbors = None
@@ -138,7 +143,7 @@ class CatSwitch(_CiscoSwitch):
 
     def sync_ospf_neighbors(self):
         print(f"Collecting OSPF neighbors from {self.connection_dict['ip']} ...")
-        ospfs_dicts = self.get_command_output(OSPF_CMD)
+        ospfs_dicts = self.get_command_output(_OSPF_CMD)
         if not ospfs_dicts:
             print("No OSPF collected")
             self.ospf_neighbors = None
@@ -147,7 +152,7 @@ class CatSwitch(_CiscoSwitch):
 
     def sync_vrfs(self):
         print(f"Collecting VRFs from {self.connection_dict['ip']} ...")
-        vrfs_dicts = self.get_command_output(VRF_CMD)
+        vrfs_dicts = self.get_command_output(_VRF_CMD)
         if not vrfs_dicts:
             print("No VRFS collected")
             self.vrfs = None
@@ -167,10 +172,11 @@ class NexusSwitch(_CiscoSwitch):
     Nexus 9K and 7k Switch device manager which hold it's own sync methods in addition to base CiscoDevice sync methods
     """
     device_type = 'cisco_nxos'
+    features_list = _CiscoSwitch.features_list + ['modules', 'vpcs']
 
     def sync_modules(self):
         print(f"Collecting Modules from {self.connection_dict['ip']} ...")
-        modules_dicts = self.get_command_output(VRF_CMD)
+        modules_dicts = self.get_command_output(_VRF_CMD)
         if not modules_dicts:
             print("No Modules collected")
             self.modules = None
@@ -179,7 +185,7 @@ class NexusSwitch(_CiscoSwitch):
 
     def sync_vpc(self):
         print(f"Collecting vpcs from {self.connection_dict['ip']} ...")
-        vpc_dicts = self.get_command_output(VPC_CMD)
+        vpc_dicts = self.get_command_output(_VPC_CMD)
         if not vpc_dicts:
             print("No vpcs collected")
             self.modules = None

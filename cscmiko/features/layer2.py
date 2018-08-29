@@ -25,9 +25,11 @@ class Vlans(FeatureSet):
     device vlans manager class ,
     model attribute is to specify which model this class belong to
     """
+    _feature_name = 'vlans'
     model = Vlan
 
     conf_template = "vlan.j2"
+
 
 
 class Interface(Feature):
@@ -60,6 +62,7 @@ class Interface(Feature):
 
 class Interfaces(FeatureSet):
     """multiple interface models class"""
+    _feature_name = 'interfaces'
     model = Interface
     conf_template = 'interface.j2'
 
@@ -84,7 +87,7 @@ class Interfaces(FeatureSet):
 
 
 class CdpNeighbors(FeatureSet):
-
+    _feature_name = 'cdp_neighbors'
     def get_cdps_for_port(self, port):
         return [i for i in self.all if i.local_port == port]
 
@@ -110,6 +113,6 @@ class Vpc(Feature):
 
 class Vpcs(FeatureSet):
     model = Vpc
-
+    _feature_name = 'vpcs'
     def get_vpc_by_port(self, port):
         return [i for i in self.all if i.port == port]

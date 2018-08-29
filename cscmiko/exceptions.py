@@ -1,2 +1,5 @@
-class CiscoSDKNotSyncedError(Exception):
+class CscmikoNotSyncedError(Exception):
+    pass
+
+class CscmikoInvalidFeatureError(Exception):
     pass
