@@ -1,6 +1,6 @@
-from cisco_sdk.tools.ssh import SSHManager
-from cisco_sdk.tools.config import check_config_result
-from cisco_sdk.features.base_component import FeatureSet
+from cscmiko.tools.ssh import SSHManager
+from cscmiko.tools.config import check_config_result
+from cscmiko.features.base_component import FeatureSet
 
 
 class CiscoDevice(object):

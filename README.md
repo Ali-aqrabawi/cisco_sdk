@@ -1,11 +1,11 @@
-# Cisco SDK
+# cscmiko SDK
 
 SDK for cisco devices build using Netmiko and ntc-templates,
 
 ### Installing
- 1) download [templats](https://github.com/Ali-aqrabawi/cisco_sdk) folder and place it
+ 1) download [templats](https://github.com/Ali-aqrabawi/cscmiko) folder and place it
  at `~/ntc-tempalates/templates`
-  2) `pip install cisco_sdk`
+  2) `pip install cscmiko`
 
 ### Getting Started
 
@@ -13,7 +13,7 @@ SDK for cisco devices build using Netmiko and ntc-templates,
 
 to sync interfaces from the device:
 
-    from cisco_sdk.devices.switches import CatSwitch
+    from cscmiko.devices.switches import CatSwitch
     my_switch = CatSwitch(host='192.168.1.1', username='admin', password='admin')
     my_switch.sync_interfaces()
 
@@ -33,7 +33,7 @@ results :
 #### Example 2:
 to add a Vlan to the device:
 
-    from cisco_sdk.devices.switches import CatSwitch
+    from cscmiko.devices.switches import CatSwitch
     my_swicth = CatSwitch(host='192.168.1.1', username='admin', password='admin')
     my_swicth.sync_vlans()
     my_swicth.vlans.add(id='911', name="Vlan911")
@@ -49,7 +49,7 @@ results:
 #### Example 3:
 Nexus switch
 
-    from cisco_sdk.devices.switches import NexusSwitch
+    from cscmiko.devices.switches import NexusSwitch
     my_swicth = NexusSwitch(host='192.168.1.2', username='admin', password='admin')
     my_swicth.sync_vpc()
 
@@ -65,4 +65,4 @@ results:
 
 ### Contributing
 
-Please read [CONTRIBUTING.md](https://github.com/Ali-aqrabawi/cisco_sdk/blob/master/CONTRIBUTION.md)  for details on our code of conduct, and the process for submitting pull requests to us.
+Please read [CONTRIBUTING.md](https://github.com/Ali-aqrabawi/cscmiko/blob/master/CONTRIBUTION.md)  for details on our code of conduct, and the process for submitting pull requests to us.

@@ -1,7 +1,7 @@
 """
 Config component are the features in cisco devices like (routes,acl,vlans ... etc)
 """
-from cisco_sdk.tools.config import render_command
+from cscmiko.tools.config import render_command
 
 
 def validate_cmd_inputs(kwargs):
