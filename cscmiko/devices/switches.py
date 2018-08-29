@@ -4,9 +4,9 @@ device manager is the user interface to device , where you can sync config compo
 """
 
 from .base_device import CiscoDevice
-from cisco_sdk.features import layer2, layer3, security, system
+from cscmiko.features import layer2, layer3, security, system
 from abc import ABC
-from cisco_sdk.exceptions import CiscoSDKNotSyncedError
+from cscmiko.exceptions import CiscoSDKNotSyncedError
 
 VLAN_CMD = "show vlan"
 INTERFACE_CMD = "show interface"

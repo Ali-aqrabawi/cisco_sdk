@@ -7,6 +7,7 @@ Example 1:
 
 to sync interfaces from the device:
 .. code-block:: python
+
     from cisco_sdk.devices.switches import CatSwitch
     my_switch = CatSwitch(host='192.168.1.1', username='admin', password='admin')
     my_switch.sync_interfaces()
