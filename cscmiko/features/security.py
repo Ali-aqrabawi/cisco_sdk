@@ -34,6 +34,7 @@ class AccessLists(FeatureSet):
     """
     all device access-lists
     """
+    _feature_name = 'access_lists'
     model = ACL
 
     def __init__(self, component_dicts):

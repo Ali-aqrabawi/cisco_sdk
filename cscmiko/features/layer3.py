@@ -39,6 +39,7 @@ class Route(Feature):
 class Routes(FeatureSet):
     """FeatureSet : group of route Features"""
     model = Route
+    _feature_name = 'routes'
 
     @property
     def ospf_list(self):
@@ -119,6 +120,7 @@ class Bgp(Feature):
 class BgpNeighbors(FeatureSet):
     """FeatureSet: set of bgp Features"""
     model = Bgp
+    _feature_name = 'bgp_neighbors'
 
     @property
     def suppressed_list(self):
@@ -162,6 +164,7 @@ class Ospf(Feature):
 class OspfNeighbors(FeatureSet):
     """FeatureSet: a set of ospf neighbors Feature"""
     model = Ospf
+    _feature_name = 'ospf_neighbors'
 
 
 class Vrf(Feature):
@@ -172,3 +175,4 @@ class Vrf(Feature):
 class Vrfs(FeatureSet):
     """FeatureSet: of vrfs Feature"""
     model = Vrf
+    _feature_name = 'vrfs'

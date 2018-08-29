@@ -2,12 +2,21 @@
 Config component are the features in cisco devices like (routes,acl,vlans ... etc)
 """
 from cscmiko.tools.config import render_command
-
+from functools import wraps
 
 def validate_cmd_inputs(kwargs):
     # validate add(),delete() and update() inputs are strings
     for kwarg in kwargs:
         assert isinstance(kwarg, str), f"config inputs should be string not {type(kwarg)}"
+
+def _check_configurable(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        if not args[0].conf_template:
+            raise TypeError(f"feature {type(args[0])._feature_name} is not configurable")
+
+        return func(*args,**kwargs)
+    return wrapper
 
 
 class Feature(object):
@@ -75,6 +84,7 @@ class FeatureSet(object):
         for i in component_dicts:
             self.all.append(self.model(i))
 
+    @_check_configurable
     def add(self, **kwargs):
         """
         add config to device , exampe my_switch.vlans.add(id="1",name="vlan1")
@@ -86,6 +96,7 @@ class FeatureSet(object):
         cmds = render_command(self.conf_template, kwargs)
         self.cmds += cmds
 
+    @_check_configurable
     def delete(self, **kwargs):
         """
         delete component , example my_switch.vlans.delete(id="1")
@@ -97,6 +108,7 @@ class FeatureSet(object):
         cmds = render_command(self.conf_template, kwargs)
         self.cmds += cmds
 
+    @_check_configurable
     def update(self, **kwargs):
         validate_cmd_inputs(kwargs)
         kwargs.update({"action": "update"})
