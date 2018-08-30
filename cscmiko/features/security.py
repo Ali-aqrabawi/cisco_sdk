@@ -21,6 +21,7 @@ class ACL:
     rules = []
     name = ''
 
+
     def __init__(self, name, rules):
         self.name = name
         for rule in rules:
@@ -36,6 +37,7 @@ class AccessLists(FeatureSet):
     """
     _feature_name = 'access_lists'
     model = ACL
+    conf_template = 'acl.j2'
 
     def __init__(self, component_dicts):
         acl = defaultdict(list)
