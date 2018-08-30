@@ -1,11 +1,11 @@
 # cscmiko SDK
 
-SDK for cisco devices build using Netmiko and ntc-templates,
+SDK, built using Netmiko and ntc-templates, for accessing configuration of Cisco devices. 
 
 ### Installing
- 1) download [templats](https://github.com/Ali-aqrabawi/cscmiko) folder and place it
- at `~/ntc-tempalates/templates`
-  2) `pip install cscmiko`
+
+1. download [templates](https://github.com/Ali-aqrabawi/cscmiko) folder and place it at `~/ntc-tempalates/templates`
+2. `pip install cscmiko`
 
 ### Getting Started
 
@@ -31,13 +31,13 @@ results :
     TenGigabitEthernet1/2/2  is  up
 
 #### Example 2:
-to add a Vlan to the device:
+to add a VLAN to the device:
 
     from cscmiko.devices.switches import CatSwitch
-    my_swicth = CatSwitch(host='192.168.1.1', username='admin', password='admin')
-    my_swicth.sync_vlans()
-    my_swicth.vlans.add(id='911', name="Vlan911")
-    is_ok, msgs = my_swicth.commit()
+    my_switch = CatSwitch(host='192.168.1.1', username='admin', password='admin')
+    my_switch.sync_vlans()
+    my_switch.vlans.add(id='911', name="Vlan911")
+    is_ok, msgs = my_switch.commit()
     print(is_ok)
 
 
@@ -50,11 +50,11 @@ results:
 Nexus switch
 
     from cscmiko.devices.switches import NexusSwitch
-    my_swicth = NexusSwitch(host='192.168.1.2', username='admin', password='admin')
-    my_swicth.sync_vpc()
+    my_switch = NexusSwitch(host='192.168.1.2', username='admin', password='admin')
+    my_switch.sync_vpc()
 
     print("list of up VPCs :")
-    for vpc in my_swicth.vpcs:
+    for vpc in my_switch.vpcs:
         if vpc.is_up:
             print("id:",vpc.id,"- port: ",vpc.port)
 
