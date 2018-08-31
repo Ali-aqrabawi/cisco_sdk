@@ -40,6 +40,7 @@ class Routes(FeatureSet):
     """FeatureSet : group of route Features"""
     model = Route
     _feature_name = 'routes'
+    conf_template = 'route.j2'
 
     @property
     def ospf_list(self):
