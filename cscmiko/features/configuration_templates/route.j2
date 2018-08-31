@@ -1,0 +1,5 @@
+{% if action == 'delete' %}
+no ip route {{ network }} {{ netmask }} {{ nexthop_ip or nexthop_interface }}
+{% else %}
+ip route {{ network }} {{ netmask }} {{ nexthop_ip or nexthop_interface }}
+{% endif %}
