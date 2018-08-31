@@ -11,7 +11,7 @@ def print_routes(routes):
 
 def main():
     """ Example of synchronizing routes from device, adding static route and delelting it"""
-    my_swicth = CatSwitch(host='4.71.144.98', username='admin', password='J3llyfish1')
+    my_swicth = CatSwitch(host='192.168.1.1', username='admin', password='admin')
 
     # get routes from device
     my_swicth.sync_routes()
