@@ -96,6 +96,7 @@ cisco_nxos_show_flogi_database.template, .*, cisco_nxos, sh[[ow]] fl[[ogi]] d[[a
 cisco_nxos_show_ip_bgp_summary.template, .*, cisco_nxos, sh[[ow]] ip b[[gp]] s[[ummary]]
 cisco_nxos_show_lldp_neighbors.template, .*, cisco_nxos, sh[[ow]] ll[[dp]] nei[[ghbors]]
 cisco_nxos_show_cdp_neighbors.template, .*, cisco_nxos, sh[[ow]] cd[[p]] neig[[hbors]]
+cisco_nxos_show_spanning_tree.template, .*, cisco_nxos, sh[[ow]] sp[[anning-tree]]
 cisco_nxos_show_ip_arp_detail.template, .*, cisco_nxos, sh[[ow]] i[[p]] a[[rp]] det[[ail]]
 cisco_nxos_show_processes_cpu.template, .*, cisco_nxos, sh[[ow]] proc[[esses]] c[[pu]]
 cisco_nxos_show_access-lists.template, .*, cisco_nxos, sh[[ow]] ip acc[[ess-lists]]
@@ -141,4 +142,3 @@ cisco_xr_show_pim_neighbor.template, .*, cisco_xr, sh[[ow]] pi[[m]] neigh[[bor]]
 cisco_xr_show_controllers.template, .*, cisco_xr, sh[[ow]] contr[[ollers]] (\S+) phy
 cisco_xr_show_interfaces.template, .*, cisco_xr, sh[[ow]] inte[[rfaces]]
 cisco_xr_show_ip_route.template, .*, cisco_xr, sh[[ow]] ip ro[[ute]]
-
