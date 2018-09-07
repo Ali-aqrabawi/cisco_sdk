@@ -4,10 +4,12 @@ Config component are the features in cisco devices like (routes,acl,vlans ... et
 from cscmiko.tools.config import render_command
 from functools import wraps
 
+
 def validate_cmd_inputs(kwargs):
     # validate add(),delete() and update() inputs are strings
     for kwarg in kwargs:
         assert isinstance(kwarg, str), f"config inputs should be string not {type(kwarg)}"
+
 
 def _check_configurable(func):
     @wraps(func)
@@ -15,7 +17,8 @@ def _check_configurable(func):
         if not args[0].conf_template:
             raise TypeError(f"feature {type(args[0])._feature_name} is not configurable")
 
-        return func(*args,**kwargs)
+        return func(*args, **kwargs)
+
     return wrapper
 
 
@@ -48,6 +51,16 @@ class Feature(object):
     def __str__(self):
         return str(self.deserialize)
 
+    def __getitem__(self, item):
+        return getattr(self, item)
+
+    def __eq__(self, other):
+        if isinstance(other, dict):  # __equal__ should accept dict or Feature object
+            return self.deserialize == other
+        elif isinstance(other, Feature):
+            return self.deserialize == other.deserialize
+        return False
+
 
 class FeatureSet(object):
     """
@@ -73,6 +86,7 @@ class FeatureSet(object):
     """
     model = Feature
     conf_template = ""
+    _feature_name = ""
     all = []
     cmds = []
 
@@ -99,7 +113,7 @@ class FeatureSet(object):
     @_check_configurable
     def delete(self, **kwargs):
         """
-        delete component , example my_switch.vlans.delete(id="1")
+        delete configuration feature , example my_switch.vlans.delete(id="1")
         :param kwargs:
         :return:
         """
@@ -110,10 +124,25 @@ class FeatureSet(object):
 
     @_check_configurable
     def update(self, **kwargs):
+        """update device configuration"""
         validate_cmd_inputs(kwargs)
         kwargs.update({"action": "update"})
         cmds = render_command(self.conf_template, kwargs)
         self.cmds += cmds
+
+    def filter(self, **kwargs):
+        results = self.all.copy()  # .all should be copied as we will be poping results while iterating through self.all
+
+        for item in self.all:
+            for key, value in kwargs.items():
+                if not hasattr(self.all[0], key):
+                    raise AttributeError(f"{self._feature_name} does not have attribute '{key}' ")
+                if item[key].lower() != value.lower():
+                    index = results.index(item)
+                    results.pop(index)
+                    break
+
+        return results
 
     def __len__(self):
         return len(self.all)
