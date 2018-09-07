@@ -116,3 +116,39 @@ class Vpcs(FeatureSet):
     _feature_name = 'vpcs'
     def get_vpc_by_port(self, port):
         return [i for i in self.all if i.port == port]
+
+class Stp(Feature):
+    pass
+
+class Stps(FeatureSet):
+    model = Stp
+    _feature_name = 'spanning_tree'
+
+    def get_by_vlan_id(self,id):
+        return [stp for stp in self.all if stp.vlan_id == id]
+
+    def get_by_interface(self,interface):
+        for stp in self.all:
+            if stp.interface == interface:
+                return stp
+    def get_by_port_status(self,status):
+        """status = FWD|BLK"""
+        return [stp for stp in self.all if stp.status == status]
+
+    def get_blocked(self):
+        return [stp for stp in self.all if stp.status == 'BLK']
+
+    def get_forwarded(self):
+        return [stp for stp in self.all if stp.status == 'FWD']
+
+    def get_designated_ports(self):
+        return [stp for stp in self.all if stp.status == 'Desg']
+
+    def get_root_ports(self):
+        return [stp for stp in self.all if stp.status == 'Root']
+
+
+
+
+
+

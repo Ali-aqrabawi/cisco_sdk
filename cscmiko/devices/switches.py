@@ -20,6 +20,7 @@ _VTP_CMD = "show vtp status"
 _CPU_CMD = "show processes cpu"
 _VPC_CMD = "show vpc"
 _MODULE_CMD = "show module"
+_STP_CMD = "show spanning-tree"
 
 
 class _CiscoSwitch(CiscoDevice, ABC):
@@ -31,7 +32,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
     my_swicth.sync_cpu_status()
     this example sync CPU status , and set a cpu_status attibute for myswitch object
     """
-    features_list = ['interfaces', 'vlans', 'cdp_neighbors', 'routes', 'access_lists', 'vtp_status']
+    features_list = ['interfaces', 'vlans', 'cdp_neighbors', 'routes', 'access_lists', 'vtp_status', 'spanning_tree']
 
     def __getattr__(self, item):
         """
@@ -44,10 +45,11 @@ class _CiscoSwitch(CiscoDevice, ABC):
         """
         if item not in self.features_list:
             raise CscmikoInvalidFeatureError(
-                f"{item} is not a valid feature , available features = {self.features_list}")
+                f"{item.replace('sync_','')} is not a valid feature , available features = {self.features_list}")
         if not item.endswith('s'):
             item = item + 's'
-        raise CscmikoNotSyncedError(f"{item} is not synced  please make sure to call sync_{item} before,")
+        raise CscmikoNotSyncedError(
+            f"{item} is not synced  please make sure to call sync_{item} before, available features : {self.features_list}")
 
     # Sync Methods
     # TODO : make the add sync to base class to have a reusable sync code
@@ -96,6 +98,15 @@ class _CiscoSwitch(CiscoDevice, ABC):
             return None
         self.access_lists = security.AccessLists(acls_dicts)
 
+    def sync_spanning_tree(self):
+        print(f"Collecting spanning-tree from {self.connection_dict['ip']} ...")
+        stp_dict = self.get_command_output(_STP_CMD)
+        if not stp_dict:
+            print("No stp collected")
+            self.spanning_tree = None
+            return None
+        self.spanning_tree = layer2.Stps(stp_dict)
+
     def sync_vtp_status(self):
         print(f"Collecting vtp status from {self.connection_dict['ip']} ...")
         vtp_dicts = self.get_command_output(_VTP_CMD)
@@ -111,6 +122,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
         """
         self.sync_interfaces()
         self.sync_vlans()
+        self.sync_spanning_tree()
         self.sync_cdp_neighbors()
         self.sync_routes()
         self.sync_access_lists()

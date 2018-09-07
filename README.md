@@ -1,6 +1,6 @@
 # cscmiko SDK
 
-SDK, built using Netmiko and ntc-templates, for accessing configuration of Cisco devices. 
+SDK for cisco Catalyst , Nexus, ASA, wireless lan controllers, built using Netmiko and ntc-templates,
 
 ### Installing
 
@@ -11,7 +11,7 @@ SDK, built using Netmiko and ntc-templates, for accessing configuration of Cisco
 
 #### Example 1:
 
-to sync interfaces from the device:
+to get interfaces from the device:
 
     from cscmiko.devices.switches import CatSwitch
     my_switch = CatSwitch(host='192.168.1.1', username='admin', password='admin')
@@ -29,6 +29,10 @@ results :
     TenGigabitEthernet1/1/5  is  up
     TenGigabitEthernet1/2/1  is  down
     TenGigabitEthernet1/2/2  is  up
+
+you can also filter:
+
+    filtered = my_switch.filter(status = 'down')  # return list of down interfaces objects
 
 #### Example 2:
 to add a VLAN to the device:
