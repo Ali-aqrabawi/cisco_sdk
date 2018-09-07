@@ -120,6 +120,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
         this call all the sync_methods incase you want to sync all components ,
         :return:
         """
+
         self.sync_interfaces()
         self.sync_vlans()
         self.sync_spanning_tree()
