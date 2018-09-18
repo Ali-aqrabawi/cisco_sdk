@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="cscmiko",
-    version="0.0.1",
+    version="0.0.2",
     author="ali aqrabawi",
     author_email="ali_aqrabawi@yahoo.com",
     description="cisco devices SDK based on netmiko",

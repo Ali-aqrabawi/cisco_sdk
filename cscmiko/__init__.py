@@ -1,7 +1,8 @@
+name = "cscmiko"
 import sys
 from .devices import *
 
-name = "cscmiko"
+
 
 # Verify Python Version
 try:
