@@ -53,10 +53,10 @@ class _CiscoSwitch(CiscoDevice, ABC):
 
     # Sync Methods
     # TODO : make the add sync to base class to have a reusable sync code
-    # TODO : sync methods shouldn't call get_command(cmd), it should take lists_dicts as arg , and set the attr
+
     # layer 2 sync methods
     def sync_interfaces(self):
-        print(f"Collecting Interfaces from {self.connection_dict['ip']} ...")
+        print(f"Collecting Interfaces from {self.host} ...")
         interfaces_dicts = self.get_command_output(_INTERFACE_CMD)
         if not interfaces_dicts:
             print("No interfaces collected")
@@ -64,7 +64,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
         self.interfaces = layer2.Interfaces(interfaces_dicts)
 
     def sync_vlans(self):
-        print(f"Collecting Vlans from {self.connection_dict['ip']} ...")
+        print(f"Collecting Vlans from {self.host} ...")
         vlans_dicts = self.get_command_output(_VLAN_CMD)
         if not vlans_dicts:
             print("No vlans collected")
@@ -72,7 +72,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
         self.vlans = layer2.Vlans(vlans_dicts)
 
     def sync_cdp_neighbors(self):
-        print(f"Collecting CDP neighbors from {self.connection_dict['ip']} ...")
+        print(f"Collecting CDP neighbors from {self.host} ...")
         cdps_dicts = self.get_command_output(_CDP_CMD)
         if not cdps_dicts:
             print("No cdp neighbors collected")
@@ -81,7 +81,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
 
     # Layer 3 sync methods
     def sync_routes(self):
-        print(f"Collecting Routes from {self.connection_dict['ip']} ...")
+        print(f"Collecting Routes from {self.host} ...")
         routes_dicts = self.get_command_output(_ROUTE_CMD)
         if not routes_dicts:
             print("No Routes collected")
@@ -90,7 +90,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
 
     # security sync methods
     def sync_access_lists(self):
-        print(f"Collecting access-lists from {self.connection_dict['ip']} ...")
+        print(f"Collecting access-lists from {self.host} ...")
         acls_dicts = self.get_command_output(_ACL_CMD)
         if not acls_dicts:
             print("No acls collected")
@@ -99,7 +99,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
         self.access_lists = security.AccessLists(acls_dicts)
 
     def sync_spanning_tree(self):
-        print(f"Collecting spanning-tree from {self.connection_dict['ip']} ...")
+        print(f"Collecting spanning-tree from {self.host} ...")
         stp_dict = self.get_command_output(_STP_CMD)
         if not stp_dict:
             print("No stp collected")
@@ -108,7 +108,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
         self.spanning_tree = layer2.Stps(stp_dict)
 
     def sync_vtp_status(self):
-        print(f"Collecting vtp status from {self.connection_dict['ip']} ...")
+        print(f"Collecting vtp status from {self.host} ...")
         vtp_dicts = self.get_command_output(_VTP_CMD)
         if not vtp_dicts:
             print("No vlans collected")
@@ -120,6 +120,7 @@ class _CiscoSwitch(CiscoDevice, ABC):
         this call all the sync_methods incase you want to sync all components ,
         :return:
         """
+
         self.sync_interfaces()
         self.sync_vlans()
         self.sync_spanning_tree()
@@ -137,7 +138,7 @@ class CatSwitch(_CiscoSwitch):
     features_list = _CiscoSwitch.features_list + ['sync_cpu_status', 'bgp_neighbors', 'ospf_neighbors', 'vrfs']
 
     def sync_cpu_status(self):
-        print(f"Collecting cpu status from {self.connection_dict['ip']} ...")
+        print(f"Collecting cpu status from {self.host} ...")
         cpu_dict = self.get_command_output(_CPU_CMD)
         if not cpu_dict:
             print("No cpu status collected")
@@ -145,7 +146,7 @@ class CatSwitch(_CiscoSwitch):
         self.cpu_status = system.Cpu(cpu_dict[0])
 
     def sync_bgp_neighbors(self):
-        print(f"Collecting BGP neighbors from {self.connection_dict['ip']} ...")
+        print(f"Collecting BGP neighbors from {self.host} ...")
         bgps_dicts = self.get_command_output(_BGP_CMD)
         if not bgps_dicts:
             print("No BGP collected")
@@ -154,7 +155,7 @@ class CatSwitch(_CiscoSwitch):
         self.bgp_neighbors = layer3.BgpNeighbors(bgps_dicts)
 
     def sync_ospf_neighbors(self):
-        print(f"Collecting OSPF neighbors from {self.connection_dict['ip']} ...")
+        print(f"Collecting OSPF neighbors from {self.host} ...")
         ospfs_dicts = self.get_command_output(_OSPF_CMD)
         if not ospfs_dicts:
             print("No OSPF collected")
@@ -163,7 +164,7 @@ class CatSwitch(_CiscoSwitch):
         self.ospf_neighbors = layer3.OspfNeighbors(ospfs_dicts)
 
     def sync_vrfs(self):
-        print(f"Collecting VRFs from {self.connection_dict['ip']} ...")
+        print(f"Collecting VRFs from {self.host} ...")
         vrfs_dicts = self.get_command_output(_VRF_CMD)
         if not vrfs_dicts:
             print("No VRFS collected")
@@ -187,7 +188,7 @@ class NexusSwitch(_CiscoSwitch):
     features_list = _CiscoSwitch.features_list + ['modules', 'vpcs']
 
     def sync_modules(self):
-        print(f"Collecting Modules from {self.connection_dict['ip']} ...")
+        print(f"Collecting Modules from {self.host} ...")
         modules_dicts = self.get_command_output(_VRF_CMD)
         if not modules_dicts:
             print("No Modules collected")
@@ -196,7 +197,7 @@ class NexusSwitch(_CiscoSwitch):
         self.modules = system.Modules(modules_dicts)
 
     def sync_vpc(self):
-        print(f"Collecting vpcs from {self.connection_dict['ip']} ...")
+        print(f"Collecting vpcs from {self.host} ...")
         vpc_dicts = self.get_command_output(_VPC_CMD)
         if not vpc_dicts:
             print("No vpcs collected")

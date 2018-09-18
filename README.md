@@ -13,7 +13,7 @@ SDK for cisco Catalyst , Nexus, ASA, wireless lan controllers, built using Netmi
 
 to get interfaces from the device:
 
-    from cscmiko.devices.switches import CatSwitch
+    from cscmiko.devices import CatSwitch
     my_switch = CatSwitch(host='192.168.1.1', username='admin', password='admin')
     my_switch.sync_interfaces()
 
@@ -37,7 +37,7 @@ you can also filter:
 #### Example 2:
 to add a VLAN to the device:
 
-    from cscmiko.devices.switches import CatSwitch
+    from cscmiko.devices import CatSwitch
     my_switch = CatSwitch(host='192.168.1.1', username='admin', password='admin')
     my_switch.sync_vlans()
     my_switch.vlans.add(id='911', name="Vlan911")
@@ -53,7 +53,7 @@ results:
 #### Example 3:
 Nexus switch
 
-    from cscmiko.devices.switches import NexusSwitch
+    from cscmiko.devices import NexusSwitch
     my_switch = NexusSwitch(host='192.168.1.2', username='admin', password='admin')
     my_switch.sync_vpc()
 

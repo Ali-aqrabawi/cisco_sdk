@@ -10,7 +10,7 @@ class CiscoSDKSSHTimeoutError(Exception):
     pass
 
 
-def netmiko_connect(connection_dict):
+def _netmiko_connect(connection_dict):
     """
     to handel netmiko connection
     :param connection_dict: netmiko connection dict
@@ -28,7 +28,7 @@ def netmiko_connect(connection_dict):
     return connection
 
 
-class SSHManager():
+class SSHManager:
     """
     SSH Context Manager
     """
@@ -36,6 +36,7 @@ class SSHManager():
     def __init__(self, connection_dict):
 
         self.conn_dict = connection_dict
+        self.conn = self.connect()
 
     def __enter__(self):
         self.conn = self.connect()
@@ -50,7 +51,7 @@ class SSHManager():
 
     def connect(self):
         print(f"connecting to {self.conn_dict['ip']}")
-        return netmiko_connect(connection_dict=self.conn_dict)
+        return _netmiko_connect(connection_dict=self.conn_dict)
 
     def save_config(self):
         self.conn.save_config()
