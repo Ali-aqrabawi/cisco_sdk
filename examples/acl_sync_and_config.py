@@ -1,4 +1,4 @@
-from cscmiko.devices.switches import CatSwitch
+from cscmiko.devices import CatSwitch
 
 
 acl = {

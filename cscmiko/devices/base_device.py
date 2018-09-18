@@ -9,12 +9,14 @@ class CiscoDevice(object):
     """
 
     def __init__(self, host, username, password):
-        self.connection_dict = {
+        self.host = host
+        connection_dict = {
             "device_type": self.device_type,
             "ip": host,
             "username": username,
             "password": password
         }
+        self.conn = SSHManager(connection_dict)
 
     def get_command_output(self, command):
         """
@@ -22,10 +24,7 @@ class CiscoDevice(object):
         :param command:
         :return: list of dict or false if connection failed .
         """
-        with SSHManager(self.connection_dict) as conn:
-            if not conn:
-                return False
-            return conn.get_command(command)
+        return self.conn.get_command(command)
 
     def send_commands_config(self, cmds, save):
         """
@@ -33,13 +32,10 @@ class CiscoDevice(object):
         :param cmds: list: commands strings
         :return: str: execution output
         """
-        with SSHManager(self.connection_dict) as conn:
-            if not conn:
-                return False
-            output = conn.send_commands_list(cmds)
-            if save:
-                conn.save_config()
-            return output
+        output = self.conn.send_commands_list(cmds)
+        if save:
+            self.conn.save_config()
+        return output
 
     def _get_all_cmds(self):
         """try:
@@ -68,10 +64,7 @@ class CiscoDevice(object):
         return check_config_result(output)
 
     def save(self):
-        with SSHManager(self.connection_dict) as conn:
-            if not conn:
-                return False
-            conn.save_config()
+        self.conn.save_config()
 
     def reboot(self):
         """
