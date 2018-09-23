@@ -6,6 +6,7 @@ interface.is_svi --> return true of that particular interface is an svi interfac
 """
 
 from .base_component import FeatureSet, Feature
+from cscmiko.features import utils
 
 
 class Vlan(Feature):
@@ -31,9 +32,32 @@ class Vlans(FeatureSet):
     conf_template = "vlan.j2"
 
 
-
 class Interface(Feature):
     """single interface model"""
+    name: str
+    link_status: str
+    protocol_status: str
+    hardware_type: str
+    address: str
+    ip_address: str
+    mtu: int
+    duplex: str
+    speed: str
+    bandwidth: int
+    input_rate: int
+    output_rate: int
+
+    def __init__(self, int_dict):
+        super().__init__(int_dict)
+        cleand = []
+        self.name = utils.translate_interface_name(self.name)
+        self.link_status = utils.clean_link_status(self.link_status)
+        self.protocol_status = utils.clean_link_status(self.protocol_status)
+        self.mtu = int(self.mtu)
+        self.bandwidth = int(self.bandwidth.replace(' Kbit', ''))
+        self.input_rate = int(self.input_rate)
+        self.output_rate = int(self.output_rate)
+        self.ip_address, self.netmask = utils.cidr_to_netmask(self.ip_address)
 
     @property
     def is_svi(self):
@@ -66,8 +90,8 @@ class Interfaces(FeatureSet):
     model = Interface
     conf_template = 'interface.j2'
 
-    def bounce(self,id):
-        self.cmds += [f"interface {id}" , "shutdown" , "no shutdown"]
+    def bounce(self, id):
+        self.cmds += [f"interface {id}", "shutdown", "no shutdown"]
 
     @property
     def down_list(self):
@@ -86,8 +110,26 @@ class Interfaces(FeatureSet):
         return [i for i in self.all if i.is_loopback]
 
 
+class CdpNrighbor(Feature):
+    neighbor:str
+    neighbor_ip:str
+    platform:str
+    remote_port:str
+    local_port:str
+    software_version:str
+
+    def __init__(self,cdps):
+        super().__init__(cdps)
+        self.neighbor = utils.extract_device_name(self.neighbor)
+        self.remote_port = utils.translate_interface_name(self.remote_port)
+        self.local_port = utils.translate_interface_name(self.local_port)
+        self.software_version = utils.exteract_software_version(self.software_version)
+
+
 class CdpNeighbors(FeatureSet):
     _feature_name = 'cdp_neighbors'
+    model = CdpNrighbor
+
     def get_cdps_for_port(self, port):
         return [i for i in self.all if i.local_port == port]
 
@@ -114,24 +156,28 @@ class Vpc(Feature):
 class Vpcs(FeatureSet):
     model = Vpc
     _feature_name = 'vpcs'
+
     def get_vpc_by_port(self, port):
         return [i for i in self.all if i.port == port]
 
+
 class Stp(Feature):
     pass
+
 
 class Stps(FeatureSet):
     model = Stp
     _feature_name = 'spanning_tree'
 
-    def get_by_vlan_id(self,id):
+    def get_by_vlan_id(self, id):
         return [stp for stp in self.all if stp.vlan_id == id]
 
-    def get_by_interface(self,interface):
+    def get_by_interface(self, interface):
         for stp in self.all:
             if stp.interface == interface:
                 return stp
-    def get_by_port_status(self,status):
+
+    def get_by_port_status(self, status):
         """status = FWD|BLK"""
         return [stp for stp in self.all if stp.status == status]
 
@@ -146,9 +192,3 @@ class Stps(FeatureSet):
 
     def get_root_ports(self):
         return [stp for stp in self.all if stp.status == 'Root']
-
-
-
-
-
-

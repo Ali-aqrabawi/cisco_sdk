@@ -38,7 +38,9 @@ class Feature(object):
         :param output:
         """
         for key, value in output.items():
-            self.__setattr__(key, value)
+            if not value:
+                value = None
+            setattr(self,key, value)
 
     @property
     def deserialize(self):
