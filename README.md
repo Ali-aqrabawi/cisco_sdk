@@ -4,8 +4,7 @@ SDK for cisco Catalyst , Nexus, ASA, wireless lan controllers, built using Netmi
 
 ### Installing
 
-1. download [templates](https://github.com/Ali-aqrabawi/cscmiko) folder and place it at `~/ntc-tempalates/templates`
-2. `pip install cscmiko`
+   `pip install cscmiko`
 
 ### Getting Started
 
