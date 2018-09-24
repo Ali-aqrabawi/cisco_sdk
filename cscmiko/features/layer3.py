@@ -6,34 +6,56 @@ BgpNeighbors.suppressed_list --> return list of suppressed bgp objects.
 """
 
 from .base_component import Feature, FeatureSet
+from . import utils
 
 
 class Route(Feature):
     """single route feature"""
+    protocol: str
+    type: str
+    network: str
+    netmask: str
+    distance: int
+    metric: str
+    nexthop_ip: str
+    nexthop_interface: str
+    uptime: str
+
+    def __init__(self, output):
+        super().__init__(output)
+        self.protocol = utils.ROUTE_PROTOCOL.get(self.protocol, 'unknown')
+        self.type = self.type or None
+        self.network, self.netmask = utils.cidr_to_netmask(self.network + '/' + self.netmask)
+        if self.distance is not None:
+            self.distance = int(self.distance)
+        if self.metric is not None:
+            self.metric = int(self.metric)
+        if self.nexthop_interface is not None:
+            self.nexthop_interface = utils.translate_interface_name(self.nexthop_interface)
 
     @property
     def is_connected(self):
-        return self.protocol == 'C'
+        return self.protocol == 'connected'
 
     @property
     def is_eigrp(self):
-        return self.protocol == 'D'
+        return self.protocol == 'eigrp'
 
     @property
     def is_ospf(self):
-        return self.protocol == 'O'
+        return self.protocol == 'ospf'
 
     @property
     def is_static(self):
-        return self.protocol == 'S'
+        return self.protocol == 'static'
 
     @property
     def is_bgp(self):
-        return self.protocol == 'B'
+        return self.protocol == 'bgp'
 
     @property
     def is_rip(self):
-        return self.protocol == 'R'
+        return self.protocol == 'rip'
 
 
 class Routes(FeatureSet):
@@ -74,6 +96,19 @@ class Routes(FeatureSet):
 
 class Bgp(Feature):
     """Bgp feature"""
+
+    origin:str
+
+    def __init__(self,output):
+        super().__init__(output)
+        if self.origin is not None:
+            if self.is_egp_origin:
+                self.origin = 'egp'
+            elif self.is_igp_origin:
+                self.origin = 'igp'
+            elif self.is_incomplete:
+                self.origin = 'incomplete'
+
 
     @property
     def is_igp_origin(self):

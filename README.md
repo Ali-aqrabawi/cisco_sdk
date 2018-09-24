@@ -14,7 +14,7 @@ to get interfaces from the device:
 
     from cscmiko.devices import CatSwitch
     my_switch = CatSwitch(host='192.168.1.1', username='admin', password='admin')
-    my_switch.sync_interfaces()
+    my_switch.fetch_interfaces()
 
     for interface in my_switch.interfaces :
         print(interface.name , " is " , interface.link_status)
@@ -38,7 +38,7 @@ to add a VLAN to the device:
 
     from cscmiko.devices import CatSwitch
     my_switch = CatSwitch(host='192.168.1.1', username='admin', password='admin')
-    my_switch.sync_vlans()
+    my_switch.fetch_vlans()
     my_switch.vlans.add(id='911', name="Vlan911")
     is_ok, msgs = my_switch.commit()
     print(is_ok)
@@ -54,7 +54,7 @@ Nexus switch
 
     from cscmiko.devices import NexusSwitch
     my_switch = NexusSwitch(host='192.168.1.2', username='admin', password='admin')
-    my_switch.sync_vpc()
+    my_switch.fetch_vpc()
 
     print("list of up VPCs :")
     for vpc in my_switch.vpcs:

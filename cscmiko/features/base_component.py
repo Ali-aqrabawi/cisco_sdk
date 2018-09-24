@@ -146,6 +146,9 @@ class FeatureSet(object):
 
         return results
 
+    def __getitem__(self, item):
+        return self.all[item]
+
     def __len__(self):
         return len(self.all)
 

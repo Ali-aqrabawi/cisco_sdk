@@ -36,7 +36,7 @@ acl = {
 
 }
 my_swicth = CatSwitch(host='192.168.1.1', username='admin', password='admin')
-my_swicth.sync_access_lists()
+my_swicth.fetch_access_lists()
 
 
 my_swicth.access_lists.delete(**acl)

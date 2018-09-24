@@ -25,6 +25,8 @@ class ACL:
     def __init__(self, name, rules):
         self.name = name
         for rule in rules:
+            if not rule['line_num']:  # the root acl should not be counted as rule
+                continue
             self.rules.append(Rule(rule))
 
     def is_extended(self):
