@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="cscmiko",
-    version="0.0.3",
+    version="0.0.6",
     author="ali aqrabawi",
     author_email="ali_aqrabawi@yahoo.com",
     description="cisco devices SDK based on netmiko",
@@ -13,7 +13,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/Ali-aqrabawi/cscmiko",
     packages=setuptools.find_packages(),
-
+    include_package_data=True,
     install_requires=['jinja2', 'netmiko'],
     classifiers=[
         "Programming Language :: Python :: 3",

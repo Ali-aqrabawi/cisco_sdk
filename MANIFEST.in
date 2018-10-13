@@ -1,0 +1,2 @@
+include cscmiko/fetch-templates/templates/*
+include cscmiko/features/configuration_templates/*
