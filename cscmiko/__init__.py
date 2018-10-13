@@ -3,7 +3,7 @@ import sys
 import os
 from .devices import *
 
-__version__ = '0.0.6'
+__version__ = '0.0.9'
 # Verify Python Version
 try:
     if not sys.version_info.major == 3:
