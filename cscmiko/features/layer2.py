@@ -111,14 +111,14 @@ class Interfaces(FeatureSet):
 
 
 class CdpNrighbor(Feature):
-    neighbor:str
-    neighbor_ip:str
-    platform:str
-    remote_port:str
-    local_port:str
-    software_version:str
+    neighbor: str
+    neighbor_ip: str
+    platform: str
+    remote_port: str
+    local_port: str
+    software_version: str
 
-    def __init__(self,cdps):
+    def __init__(self, cdps):
         super().__init__(cdps)
         self.neighbor = utils.extract_device_name(self.neighbor)
         self.remote_port = utils.translate_interface_name(self.remote_port)
