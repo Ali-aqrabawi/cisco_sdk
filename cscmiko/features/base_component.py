@@ -97,8 +97,8 @@ class FeatureSet(object):
         return len(self)
 
     def __init__(self, component_dicts):
+        self.all = []
         for i in component_dicts:
-            self.all = []
             self.all.append(self.model(i))
 
     @_check_configurable
