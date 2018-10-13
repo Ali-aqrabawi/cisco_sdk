@@ -5,6 +5,11 @@ it has more business logic on the components
 
 from .base_component import Feature, FeatureSet
 
+class Inventory(Feature):
+    def __init__(self,output):
+        super().__init__(output)
+        self.serial = self.serial[0]
+        self.hardware = self.hardware[0]
 
 class Cpu(Feature):
     @property

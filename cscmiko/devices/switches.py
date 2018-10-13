@@ -8,6 +8,7 @@ from cscmiko.features import layer2, layer3, security, system
 from abc import ABC
 from cscmiko.exceptions import CscmikoNotSyncedError, CscmikoInvalidFeatureError
 
+_INVETORY_CMD = "show version"
 _VLAN_CMD = "show vlan"
 _INTERFACE_CMD = "show interface"
 _ROUTE_CMD = "show ip route"
@@ -32,7 +33,8 @@ class _CiscoSwitch(CiscoDevice, ABC):
     my_swicth.fetch_cpu_status()
     this example fetch CPU status , and set a cpu_status attibute for myswitch object
     """
-    features_list = ['interfaces', 'vlans', 'cdp_neighbors', 'routes', 'access_lists', 'vtp_status', 'spanning_tree']
+    features_list = ['invetory', 'interfaces', 'vlans', 'cdp_neighbors', 'routes', 'access_lists', 'vtp_status',
+                     'spanning_tree']
 
     def __getattr__(self, item):
         """
@@ -53,6 +55,14 @@ class _CiscoSwitch(CiscoDevice, ABC):
 
     # Sync Methods
     # TODO : make the add fetch to base class to have a reusable fetch code
+
+    def fetch_inventory(self):
+        print(f"Collecting Inventory details from {self.host} ...")
+        inventory_dict = self.get_command_output(_INVETORY_CMD)
+        if not inventory_dict:
+            print("No inventory details collected")
+            return None
+        self.inventory = system.Inventory(inventory_dict[0])
 
     # layer 2 fetch methods
     def fetch_interfaces(self):

@@ -89,7 +89,7 @@ class FeatureSet(object):
     model = Feature
     conf_template = ""
     _feature_name = ""
-    all = []
+
     cmds = []
 
     @property
@@ -98,6 +98,7 @@ class FeatureSet(object):
 
     def __init__(self, component_dicts):
         for i in component_dicts:
+            self.all = []
             self.all.append(self.model(i))
 
     @_check_configurable
