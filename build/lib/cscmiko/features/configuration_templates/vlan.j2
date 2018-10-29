@@ -1,0 +1,8 @@
+{% if action == "add" or action == "update" %}
+vlan {{ id }}
+{%if name %}
+    name {{ name }}
+{% endif %}
+{% elif action == "delete" %}
+no vlan {{ id }}
+{% endif %}

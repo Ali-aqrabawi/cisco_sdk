@@ -1,0 +1,40 @@
+Value Required INTERFACE (\S+)
+Value DESCRIPTION (\S+)
+Value SWITCH_PORT (switchport|no switchport)
+Value STATUS (shutdown| no shutdown)
+Value DATA_VLAN (\d+)
+Value ALLOWED_VLANS (\S+)
+Value VOICE_VLAN (\d+)
+Value NATIVE_VLAN (\d+)
+Value TRUNK_ENCAPSULATION (dot1q|isl|negotiate)
+Value INTERFACE_MODE (\S+)
+Value IP_ADDRESS (\d+\.\d+\.\d+\.\d+)
+Value NETMASK (\d+\.\d+\.\d+\.\d+)
+Value PORT_FAST (disable|edge|network)
+Value BPDU_GUARD (enable|disable)
+Value CHANNEL_GROUP_NUMBER (\d+)
+Value CHANNEL_GROUP_MODE (active|passive|auto|desirable|on)
+Value HSRP_GROUP_NUMBER (\d+)
+Value HSRP_IP (\d+\.\d+\.\d+\.\d+)
+Value HSRP_PREEMPT (\S+)
+Value HSRP_PRIORITY (\d+)
+
+Start
+  ^interface -> Continue.Record
+  ^interface\s+${INTERFACE}$$
+  ^\s+description\s+${DESCRIPTION}$$
+  ^\s+${SWITCH_PORT}$$
+  ^\s+switchport\s+access\s+vlan\s+${DATA_VLAN}$$
+  ^\s+switchport\s+trunk\s+encapsulation\s+${TRUNK_ENCAPSULATION}
+  ^\s+switchport\s+trunk\s+native\s+vlan\s+${NATIVE_VLAN}
+  ^\s+switchport\s+trunk\s+allowed\s+vlan\s+${ALLOWED_VLANS}
+  ^\s+switchport\s+mode\s+${INTERFACE_MODE}$$
+  ^\s+switchport\s+voice\s+vlan\s+${VOICE_VLAN}
+  ^\s+${STATUS}$$
+  ^\s+spanning-tree\s+portfast\s+${PORT_FAST}$$
+  ^\s+spanning-tree\s+bpduguard\s+${BPDU_GUARD}$$
+  ^\s+channel-group\s+${CHANNEL_GROUP_NUMBER}\s+mode\s+${CHANNEL_GROUP_MODE}
+  ^\s+ip address\s+${IP_ADDRESS}\s+${NETMASK}
+  ^\s+standby\s+${HSRP_GROUP_NUMBER}\s+ip\s+${HSRP_IP}
+  ^\s+standby\s+${HSRP_GROUP_NUMBER}\s+priority\s+${HSRP_PRIORITY}
+  ^\s+standby\s+${HSRP_GROUP_NUMBER}\s+${HSRP_PREEMPT}

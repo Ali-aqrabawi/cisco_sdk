@@ -1,0 +1,10 @@
+Value PROCCESSOR_TOTAL (\d+)
+Value PROCCESSOR_USED (\d+)
+Value PROCCESSOR_FREE (\d+)
+Value IO_TOTAL (\d+)
+Value IO_USED (\d+)
+Value IO_FREE (\d+)
+
+Start
+  ^Processor\s+Pool\s+Total:\s+${PROCCESSOR_TOTAL}\s+Used:\s+${PROCCESSOR_USED}\s+Free:\s+${PROCCESSOR_FREE}
+  ^\s+I/O\s+Pool\s+Total:\s+${IO_TOTAL}\s+Used:\s+${IO_USED}\s+Free:\s+${IO_FREE} -> Record

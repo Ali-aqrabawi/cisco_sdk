@@ -1,0 +1,16 @@
+{%if action=='delete' %}
+    {% if type=='extended' %}
+    no ip access-list extended {{name}}
+    {% else %}
+    no ip access-list standard {{name}}
+    {% endif %}
+{% else %}
+    {% if type=='extended' %}
+    ip access-list extended {{name}}
+    {% else %}
+    ip access-list standard {{name}}
+    {% endif %}
+    {% for rule in rules%}
+    {{rule['action']}} {{rule['protocol']}} {% if not rule['src_wc'] %}host {{rule['src']}} {% else %} {{ rule['src'] }} {{ rule['src_wc'] }}{% endif %} {% if rule['src_ports'] %} {{ rule['src_port_match'] }} {% for port in rule['src_ports'] %} {{port}} {% endfor %} {% endif %} {% if not rule['dest_wc'] %} host {{rule['dest']}} {% else %} {{ rule['dest'] }} {{rule['dest_wc']}} {% endif %} {% if rule['dest_ports'] %} {{rule['dest_port_match']}} {% for port in rule['dest_ports']%} {{port}} {% endfor %} {% endif %}
+    {% endfor %}
+{% endif %}
