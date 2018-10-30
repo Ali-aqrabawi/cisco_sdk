@@ -37,6 +37,7 @@ cisco_ios_show_environment_power_all.template, .*, cisco_ios, sh[[ow]] envi[[ron
 cisco_ios_show_interface_transceiver.template, .*, cisco_ios, sh[[ow]] int[[erface]] trans[[ceiver]]
 cisco_ios_show_lldp_neighbors_detail.template, .*, cisco_ios, sh[[ow]] lld[[p]] neig[[hbors]] det[[ail]]
 cisco_ios_show_cdp_neighbors_detail.template, .*, cisco_ios, sh[[ow]] c[[dp]] neig[[hbors]] det[[ail]]
+cisco_ios_show_run_section_interface.template, .*, cisco_ios, sh[[ow]] run | sec[[tion]] int[[erface]]
 cisco_ios_show_interfaces_status.template, .*, cisco_ios, sh[[ow]] int[[erfaces]] st[[atus]]
 cisco_ios_show_ip_source_binding.template, .*, cisco_ios, sh[[ow]] ip sou[[rce]] b[[inding]]
 cisco_ios_show_mac-address-table.template, .*, cisco_ios, sh[[ow]] m[[ac-address-table]]
@@ -53,8 +54,8 @@ cisco_ios_show_snmp_community.template, .*, cisco_ios, sh[[ow]] sn[[mp]] com[[mu
 cisco_ios_show_cdp_neighbors.template, .*, cisco_ios, sh[[ow]] c[[dp]] neig[[hbors]]
 cisco_ios_show_controller_t1.template, .*, cisco_ios, sh[[ow]] cont[[rollers]] t1
 cisco_ios_show_platform_diag.template, .*, cisco_ios, sh[[ow]] plat[[form]] di[[ag]]
-cisco_ios_show_processes_memory.template, .*, cisco_ios, sh[[ow]] proc[[esses]] memory
 cisco_ios_show_processes_cpu.template, .*, cisco_ios, sh[[ow]] proc[[esses]] [[cpu]]
+cisco_ios_show_processes_memory.template, .*, cisco_ios, sh[[ow]] proc[[esses]] memory
 cisco_ios_show_spanning-tree.template, .*, cisco_ios, sh[[ow]] sp[[anning-tree]]
 cisco_ios_show_standby_brief.template, .*, cisco_ios, sh[[ow]] standby br[[ief]]
 cisco_ios_show_ip_int_brief.template, .*, cisco_ios, sh[[ow]] ip int[[erface]] br[[ief]]
@@ -83,6 +84,7 @@ cisco_nxos_show_environment_temperature.template, .*, cisco_nxos, sh[[ow]] env[[
 cisco_nxos_show_ip_dhcp_relay_address.template, .*, cisco_nxos, sh[[ow]] ip dh[[cp]] r[[elay]] a[[ddress]]
 cisco_nxos_show_lldp_neighbors_detail.template, .*, cisco_nxos, sh[[ow]] ll[[dp]] nei[[ghbors]] d[[etail]]
 cisco_nxos_show_cdp_neighbors_detail.template, .*, cisco_nxos, sh[[ow]] c[[dp]] neig[[hbors]] det[[ail]]
+cisco_nxos_show_run_section_interface.template, .*, cisco_ios, sh[[ow]] run | sec[[tion]] int[[erface]]
 cisco_nxos_show_ip_ospf_neighbor_vrf.template, .*, cisco_nxos, sh[[ow]] ip ospf nei[[ghbor]] vrf (\S+)
 cisco_nxos_show_ipv6_interface_brief.template, .*, cisco_nxos, sh[[ow]] ipv[[6]] interf[[ace]] b[[rief]]
 cisco_nxos_show_port-channel_summary.template, .*, cisco_nxos, sh[[ow]] po[[rt-channel]] sum[[mary]]
