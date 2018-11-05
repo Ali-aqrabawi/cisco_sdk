@@ -11,13 +11,16 @@ class CiscoDevice(object):
 
     def __init__(self, host, username, password):
         self.host = host
-        connection_dict = {
+        self.connection_dict = {
             "device_type": self.device_type,
             "ip": host,
             "username": username,
             "password": password
         }
-        self.conn = SSHManager(connection_dict)
+        self.conn = self.connect()
+
+    def connect(self):
+        return SSHManager(self.connection_dict)
 
     def disconnect(self):
         self.conn.disconnect()

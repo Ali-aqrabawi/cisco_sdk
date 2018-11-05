@@ -3,3 +3,11 @@ class CscmikoNotSyncedError(Exception):
 
 class CscmikoInvalidFeatureError(Exception):
     pass
+
+
+class CiscoSDKSSHAuthenticationError(Exception):
+    pass
+
+
+class CiscoSDKSSHTimeoutError(Exception):
+    pass

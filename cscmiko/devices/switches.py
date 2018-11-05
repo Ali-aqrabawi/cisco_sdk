@@ -35,8 +35,8 @@ class _CiscoSwitch(CiscoDevice, ABC):
     my_swicth.fetch_cpu_status()
     this example fetch CPU status , and set a cpu_status attibute for myswitch object
     """
-    features_list = ['invetory', 'interfaces', 'vlans', 'cdp_neighbors', 'routes', 'access_lists', 'vtp_status',
-                     'spanning_tree','interfaces_configs']
+    features_list = ['inventory', 'interfaces', 'vlans', 'cdp_neighbors', 'routes', 'access_lists', 'vtp_status',
+                     'spanning_tree', 'interfaces_configs']
 
     def __getattr__(self, item):
         """
@@ -82,7 +82,6 @@ class _CiscoSwitch(CiscoDevice, ABC):
             print("No interfaces config collected")
             return None
         self.interfaces_configs = layer2.InterfaceConfigs(interfaces_configs_dicts)
-
 
     def fetch_vlans(self):
         print(f"Collecting Vlans from {self.host} ...")
@@ -156,7 +155,7 @@ class CatSwitch(_CiscoSwitch):
     Catalyst Switch device manager which hold it's own fetch methods in addition to base CiscoDevice fetch methods
     """
     device_type = 'cisco_ios'
-    features_list = _CiscoSwitch.features_list + ['fetch_cpu_status', 'bgp_neighbors', 'ospf_neighbors', 'vrfs']
+    features_list = _CiscoSwitch.features_list + ['cpu_status', 'memory_status', 'bgp_neighbors', 'ospf_neighbors', 'vrfs']
 
     def fetch_cpu_status(self):
         print(f"Collecting cpu status from {self.host} ...")
@@ -166,15 +165,13 @@ class CatSwitch(_CiscoSwitch):
             return None
         self.cpu_status = system.Cpu(cpu_dict[0])
 
-    def fetch_mem_status(self):
+    def fetch_memory_status(self):
         print(f"Collecting memory status from {self.host} ...")
         mem_dict = self.get_command_output(_MEM_CMD)
         if not mem_dict:
             print("No cpu status collected")
             return None
         self.memory_status = system.Memory(mem_dict[0])
-
-
 
     def fetch_bgp_neighbors(self):
         print(f"Collecting BGP neighbors from {self.host} ...")

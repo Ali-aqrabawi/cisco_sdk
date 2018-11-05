@@ -2,12 +2,7 @@ from netmiko import ConnectHandler, NetmikoTimeoutError, NetMikoTimeoutException
     NetmikoAuthError, NetMikoAuthenticationException
 
 
-class CiscoSDKSSHAuthenticationError(Exception):
-    pass
-
-
-class CiscoSDKSSHTimeoutError(Exception):
-    pass
+from cscmiko.exceptions import CiscoSDKSSHAuthenticationError,CiscoSDKSSHTimeoutError
 
 
 def _netmiko_connect(connection_dict):
