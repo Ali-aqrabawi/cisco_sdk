@@ -5,8 +5,8 @@ vlan.has_interface --> return true of that particular vlan has an interface
 interface.is_svi --> return true of that particular interface is an svi interface
 """
 
-from .base_component import FeatureSet, Feature
-from cscmiko.features import utils
+from .base import FeatureSet, Feature
+from cscmiko.models import utils
 
 
 class Vlan(Feature):
@@ -30,6 +30,9 @@ class Vlans(FeatureSet):
     model = Vlan
 
     conf_template = "vlan.j2"
+
+    def add(self, id, name):
+        super().add(id=id, name=name)
 
 
 class Interface(Feature):
@@ -119,7 +122,7 @@ class InterfaceConfig(Feature):
         self.interface = utils.translate_interface_name(self.interface)
         self.switch_port = utils.is_switchport(self.switch_port)
         if self.interface_mode == 'trunk':
-            if  self.allowed_vlans is None:
+            if self.allowed_vlans is None:
                 self.allowed_vlans = 'all'
             if self.native_vlan is None:
                 self.native_vlan = '1'
@@ -158,6 +161,27 @@ class CdpNeighbors(FeatureSet):
 
     def get_cdp_by_ip(self, ip):
         return [i for i in self.all if i.neighbor_ip == ip]
+
+class LldpNrighbor(Feature):
+    neighbor: str
+    neighbor_ip: str
+    platform: str
+    remote_port: str
+    local_port: str
+    software_version: str
+
+    def __init__(self, cdps):
+        super().__init__(cdps)
+        self.neighbor = utils.extract_device_name(self.neighbor)
+        self.remote_port = utils.translate_interface_name(self.remote_port)
+        self.local_port = utils.translate_interface_name(self.local_port)
+        self.software_version = utils.exteract_software_version(self.software_version)
+
+
+class LldpNeighbors(FeatureSet):
+    _feature_name = 'lldp_neighbors'
+    model = LldpNrighbor
+
 
 
 class Vtp(Feature):

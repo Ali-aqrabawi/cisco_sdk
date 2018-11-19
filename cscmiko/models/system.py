@@ -3,7 +3,7 @@ this module has the system config components like cpu
 it has more business logic on the components
 """
 
-from .base_component import Feature, FeatureSet
+from .base import Feature, FeatureSet
 from math import floor
 
 class Inventory(Feature):

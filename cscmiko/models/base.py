@@ -1,5 +1,5 @@
 """
-Config component are the features in cisco devices like (routes,acl,vlans ... etc)
+Config component are the models in cisco devices like (routes,acl,vlans ... etc)
 """
 from cscmiko.tools.config import render_command
 from functools import wraps

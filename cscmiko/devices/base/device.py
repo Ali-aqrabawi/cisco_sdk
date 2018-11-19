@@ -1,9 +1,9 @@
 from cscmiko.tools.ssh import SSHManager
 from cscmiko.tools.config import check_config_result
-from cscmiko.features.base_component import FeatureSet
+from cscmiko.models.base import FeatureSet
 
 
-class CiscoDevice(object):
+class Device(object):
     """
     base class for cisco Device managers,
     """
@@ -66,6 +66,8 @@ class CiscoDevice(object):
             return False, "No changes to commit"
         # execute the commands
         output = self.send_commands_config(all_cmds, save)
+        print("commands execution = ")
+        print(output)
         if not output:
             return False, "Connection to device failed"
         return check_config_result(output)

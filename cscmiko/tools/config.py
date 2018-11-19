@@ -55,7 +55,7 @@ def render_command(template_name, variables):
     """
     # get cisco_sdk/ path
     PROJECT_DIR = os.path.dirname(os.path.dirname(__file__))
-    TEMPLATES_DIR = os.path.join(PROJECT_DIR, "features/configuration_templates")
+    TEMPLATES_DIR = os.path.join(PROJECT_DIR, "models/configuration_templates")
     # render the jinja2 template from a string
     env = Environment(loader=FileSystemLoader(searchpath=TEMPLATES_DIR))
 
